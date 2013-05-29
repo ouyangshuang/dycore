@@ -14,22 +14,6 @@
         <env.type>dev</env.type>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>Internal Releases</name>
-            <url>http://192.168.0.133:10150/nexus/content/repositories/releases/</url>
-            <uniqueVersion>false</uniqueVersion>
-        </repository>
-
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>Internal Snapshots</name>
-            <url>http://192.168.0.133:10150/nexus/content/repositories/snapshots/</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
