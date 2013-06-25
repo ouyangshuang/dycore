@@ -1,0 +1,129 @@
+package com.dooioo.upload.image.factory;
+
+import com.dooioo.upload.Company;
+import com.dooioo.upload.exception.UploadException;
+import com.dooioo.upload.image.ImageArgConvert;
+import com.dooioo.upload.Upload;
+import com.dooioo.upload.image.ImageSize;
+import com.dooioo.upload.image.Logo;
+import com.dooioo.upload.utils.FileUtils;
+import com.dooioo.upload.utils.UploadConfig;
+import org.apache.log4j.Logger;
+
+import java.io.File;
+import java.util.List;
+
+/**
+ * Created with IntelliJ IDEA at 13-6-24 下午1:45.
+ *
+ * @author 焦义贵
+ * @since 1.0
+ * 图片接口
+ *
+ */
+public abstract class AbstractImage {
+    protected static final Logger LOGGER = Logger.getLogger(AbstractImage.class);
+    /**
+     * 文件路径分隔符
+     */
+    protected static final String FILE_SEPARATOR = File.separator;
+    /**
+     * 上传图片根目录
+     */
+    private static final String originalDirectory = UploadConfig.getInstance().getOriginalDirectory();
+    /**
+     * 压缩后，图片根目录
+     */
+    private static final String tragetDirectory = UploadConfig.getInstance().getTargetDirectory();
+
+    /**
+     * 生成单张缩略图
+     * @param fileName 图片路径
+     * @param imageArgConvert 生成规格
+     */
+    public abstract void scaleSingleImage(String fileName ,Company company, ImageArgConvert imageArgConvert) throws UploadException;
+
+    /**
+     * 生成多张缩略图
+     * @param fileName 图片路径
+     * @param imageArgConverts 生成规格
+     */
+    public abstract void scaleMultiHandle(String fileName ,Company company, List<ImageArgConvert> imageArgConverts) throws UploadException;
+
+    /**
+     * 生成原图
+     * @param data 图片字节流
+     * @param savePath 保存路径
+     * @param
+     */
+    public abstract Upload upload(byte[] data , String savePath) throws UploadException;
+
+    /**
+     * 图片等比例缩放
+     * @param sourceImageSize
+     * @param targetImageSize
+     * @return
+     */
+    protected static ImageSize scaleSize(ImageSize sourceImageSize,ImageSize targetImageSize){
+        ImageSize scaleImageSize = new ImageSize();
+        scaleImageSize.setHeight(sourceImageSize.getHeight());
+        scaleImageSize.setWidth(sourceImageSize.getWidth());
+
+        if(sacleSourcePic(sourceImageSize,targetImageSize)){
+            return scaleImageSize;
+        }
+
+        if(compareScaleSize(sourceImageSize,targetImageSize)){
+            scaleImageSize.setHeight(targetImageSize.getHeight());
+            scaleImageSize.setWidth(((sourceImageSize.getWidth() / sourceImageSize.getHeight()) * targetImageSize.getHeight()));
+        }else{
+            scaleImageSize.setWidth(targetImageSize.getWidth());
+            scaleImageSize.setHeight((targetImageSize.getWidth() * sourceImageSize.getHeight()) / sourceImageSize.getWidth());
+        }
+        return scaleImageSize;
+    }
+
+    /**
+     * 判断是否生成原图
+     * -1x-1规格图片
+     * 0x0规格图片
+     * 原图高小于目标图片高且原图宽小于目标图片宽
+     * @return
+     */
+    private static boolean sacleSourcePic(ImageSize sourceImageSize,ImageSize targetImageSize){
+        return targetImageSize.getHeight() == -1 || targetImageSize.getWidth() == -1
+               || targetImageSize.getHeight() == 0 || targetImageSize.getWidth() ==0
+               || (targetImageSize.getHeight() > sourceImageSize.getHeight()
+                   && targetImageSize.getWidth() > sourceImageSize.getWidth());
+    }
+
+    /**
+     * 获取图片文件的扩展名
+     * @param size
+     * @return
+     * @throws StringIndexOutOfBoundsException
+     */
+    protected static String generalImageExtName(ImageSize size , String fileName) throws UploadException{
+        if(size.getHeight() == -1 || size.getWidth() == -1 || fileName.length() == 0){
+            return "";
+        }
+        return fileName + "_" + size.getWidth() + "x" + size.getHeight() + "." + FileUtils.getFileExtName(fileName);
+    }
+
+    /**
+     * 根据图片与目标图片的长宽对比度得出最终图片尺寸的一切相应参数
+     * @return 判断是否是宽比例缩放
+     */
+    private static boolean compareScaleSize(ImageSize sourceSize,ImageSize targetSize) {
+        return sourceSize.getWidth() / targetSize.getWidth() >=  sourceSize.getHeight() / targetSize.getHeight();
+    }
+
+    /**
+     * 图片是否需要打水印
+     * @param imageArgConvert
+     * @return
+     */
+    protected static boolean hasWaterMaker(ImageArgConvert imageArgConvert) {
+        return imageArgConvert.getLogo() != Logo.None;
+    }
+}
