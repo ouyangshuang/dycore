@@ -18,7 +18,8 @@
 	<modules>
 		<module>dy-web</module>
 		<module>dy-commons</module>
-        <module>dy-async</module>
+        <module>dy-fileupload</module>
+        <!--<module>dy-async</module>-->
     </modules>
 
     <profiles>
@@ -53,7 +54,6 @@
     </profiles>
 
     <distributionManagement>
-
        <repository>
            <id>nexus</id>
            <name>Internal Releases</name>
