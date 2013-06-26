@@ -11,6 +11,7 @@ import java.io.*;
  * Date: 12-8-13
  * Time: 下午2:35
  */
+@Deprecated
 public class IOs extends IOUtils {
 
     private static int BUFFER_SIZE = 4096;

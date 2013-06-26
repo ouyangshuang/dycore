@@ -11,6 +11,7 @@ import java.io.*;
  * Time: 下午5:31
  * To change this template use File | Settings | File Templates.
  */
+@Deprecated
 public class IoUtils {
      private static int BUFFER_SIZE = 4096;
 
