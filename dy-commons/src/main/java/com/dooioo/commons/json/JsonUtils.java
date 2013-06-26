@@ -1,16 +1,16 @@
 package com.dooioo.commons.json;
 
 import com.dooioo.commons.Strings;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.beanutils.DynaBean;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -23,27 +23,10 @@ import java.util.Map;
  */
 public class JsonUtils {
 
-	/**
-	 * 将一个json字符串格式转成一个Map对象
-	 * @param s
-	 * @return
-	 */
-    @Deprecated
+    private static final Log log = LogFactory.getLog(JsonUtils.class);
+
 	public static Map<String, Object> parserToMap(String s) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		JSONObject json = JSONObject.fromObject(s.replaceAll("\n", "#n").replaceAll("\t", "#t").replaceAll("\r", "#r"));
-		Iterator<String> keys = json.keys();
-		while (keys.hasNext()) {
-			String key = (String) keys.next();
-			String value = Strings.defaultStr(
-                    json.get(key).toString(), "");
-			if (value.startsWith("{") && value.endsWith("}")) {
-				map.put(key, parserToMap(value));
-			} else {
-				map.put(key, value.replaceAll("#n", "\n").replaceAll("#t", "\t").replaceAll("#r", "\r"));
-			}
-		}
-		return map;
+		return readToMap(s);
 	}
 	
 	/**
@@ -55,7 +38,7 @@ public class JsonUtils {
 	public static Map<String, String> parserToStringMap(String jsonStr) {
 		Map<String, Object> map = parserToMap(jsonStr);
 		Map<String, String> stringMap = new HashMap<String, String>();
-		
+
 		for (String key : map.keySet()) {
 			stringMap.put(key, String.valueOf(map.get(key)));
 		}
@@ -84,7 +67,7 @@ public class JsonUtils {
         try {
             return toBean(json, Class.forName(beanName));
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return null;
     }
@@ -97,8 +80,7 @@ public class JsonUtils {
      */
     @Deprecated
     public static Object toBean(String json, Class clazz) {
-        JSONObject jsonObject = JSONObject.fromObject(json);
-        return JSONObject.toBean(jsonObject, clazz);
+       return readValueToObj(json, clazz);
     }
 
     /**
@@ -123,8 +105,12 @@ public class JsonUtils {
      */
     @Deprecated
     public static String toJson(Object obj) {
-        JSONObject jsonObject = JSONObject.fromObject(obj);
-        return jsonObject.toString();
+        try {
+            return write(obj);
+        } catch (IOException e) {
+            log.error(e);
+            return "";
+        }
     }
 
     /**
@@ -133,20 +119,25 @@ public class JsonUtils {
 	 * @return
 	 */
     public static String objectToJson(Object obj){
-    	if(obj == null)return "";
-    	JSONArray json = JSONArray.fromObject(obj);
-    	return json.toString().replaceAll("^\\[","").replaceAll("\\]$","");
+        try {
+            return write(obj);
+        } catch (IOException e) {
+            log.error(e);
+            return "";
+        }
     }
 
     public static Map<String, Object> readToMap(String str) {
         Map<String, Object> emptyMap = new HashMap<String, Object>();
-        if(Strings.isEmpty(str))
+        if(Strings.isEmpty(str)) {
             return emptyMap;
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(str, Map.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return emptyMap;
     }
@@ -168,7 +159,7 @@ public class JsonUtils {
         try {
             return mapper.readValue(str, clss);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return null;
     }
@@ -179,7 +170,7 @@ public class JsonUtils {
         try {
             return mapper.readValue(file, clss);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
         }
         return null;
     }
