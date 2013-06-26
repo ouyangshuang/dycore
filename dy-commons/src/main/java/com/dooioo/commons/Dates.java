@@ -490,7 +490,7 @@ public class Dates extends DateUtils {
     }
 
     /**
-     * 获取每月最后一天 yyy-MM-dd  00:00:00
+     * 获取每月最后一天 yyy-MM-dd 23:59:59
      */
     public static String getMonthLastDayEndStr(){
         return getMonthLastDayStr() + " 23:59:59";
