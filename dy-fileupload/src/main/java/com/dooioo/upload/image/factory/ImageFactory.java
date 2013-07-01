@@ -10,7 +10,9 @@ package com.dooioo.upload.image.factory;
 public class ImageFactory {
     private static AbstractImage image = null;
 
-    public static AbstractImage newInstance(){
+    private ImageFactory(){}
+
+    public static synchronized AbstractImage newInstance(){
         if(image == null){
             image = new ImageMagick();
         }

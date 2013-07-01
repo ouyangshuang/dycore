@@ -1,5 +1,6 @@
 package com.dooioo.upload.utils;
 
+import com.dooioo.commons.Strings;
 import com.dooioo.upload.Company;
 import org.apache.log4j.Logger;
 
@@ -63,6 +64,18 @@ public class UploadConfig {
 
     public String getFlashDirectory() {
         return flashDirectory;
+    }
+
+    public String getDocPath() {
+        return properties.getProperty("docPath","");
+    }
+
+    public String getRecordPath() {
+        return properties.getProperty("recordPath","");
+    }
+
+    public String getFlashPath() {
+        return properties.getProperty("flashPath","");
     }
 
     public String getLogoHuge(Company company){

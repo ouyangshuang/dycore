@@ -30,6 +30,9 @@ public class ImageArgConvert {
       */
     private boolean mirror = false;
 
+    public ImageArgConvert(){
+    }
+
     /**
      * @param imageSize 图片尺寸
      */

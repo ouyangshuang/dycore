@@ -52,23 +52,12 @@ public class FileUtils {
         FileChannel channel = new FileOutputStream(filePath).getChannel();
         channel.write(ByteBuffer.wrap(fileBytes));
         channel.close();
-        channel = null;
     }
 
     /**
      * 文件读取成字节流
      */
     public static byte[] readFileToByte(String path) throws IOException {
-//        FileChannel channel = new FileInputStream(path).getChannel();
-//        ByteBuffer byteBuf = ByteBuffer.allocate((int) channel.size());
-//
-//        MappedByteBuffer buff = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-//        buff.
-//        byte[] data = buff.array();
-//        buff.flip();
-//        buff = null;
-//        channel.close();
-//        channel = null;
         return IoUtils.copyToByteArray(new FileInputStream(path));
     }
 }
