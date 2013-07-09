@@ -3,7 +3,7 @@ package com.dooioo.upload.upload;
 import com.dooioo.commons.Dates;
 import com.dooioo.commons.Randoms;
 import com.dooioo.upload.Company;
-import com.dooioo.upload.Upload;
+import com.dooioo.upload.UploadResult;
 import com.dooioo.upload.exception.UploadException;
 import com.dooioo.upload.image.ImageArgConvert;
 import com.dooioo.upload.image.factory.ImageFactory;
@@ -34,7 +34,7 @@ public final class ImageUpload{
      *
      * @throws Exception
      */
-    public static Upload upload(byte[] data , String origiFileName , Company company, ImageArgConvert... imageArgConverts) throws UploadException {
+    public static UploadResult upload(byte[] data , String origiFileName , Company company, ImageArgConvert... imageArgConverts) throws UploadException {
         try {
             FileUtils.existsAndCreate( UploadConfig.getInstance().getOriginalDirectory() + File.separator + Dates.getDateTime(DATE_STYLE) + FILE_SEPARATOR );
             String targetFileName = Dates.getDateTime(DATE_STYLE) + FILE_SEPARATOR + Randoms.getPrimaryKey() + FILE_EXT + FileUtils.getFileExtName(origiFileName);
@@ -51,7 +51,7 @@ public final class ImageUpload{
                     }
                 }
             }
-            Upload upload = ImageFactory.newInstance().upload(data, UploadConfig.getInstance().getOriginalDirectory() + File.separator + targetFileName);
+            UploadResult upload = ImageFactory.newInstance().upload(data, UploadConfig.getInstance().getOriginalDirectory() + File.separator + targetFileName);
             upload.setOrigiName(origiFileName).setTargetName(targetFileName);
 
             //同步生成
@@ -74,7 +74,7 @@ public final class ImageUpload{
      *
      * @throws Exception
      */
-    public static Upload upload(FileItem fileItem, Company company) throws UploadException {
+    public static UploadResult upload(FileItem fileItem, Company company) throws UploadException {
        return upload(fileItem.get(), fileItem.getName(),company);
     }
 
@@ -83,7 +83,7 @@ public final class ImageUpload{
      * @param fileName
      * @param imageArgConverts
      */
-    public static void scaleMultiHandle(String fileName , Company company,List<ImageArgConvert> imageArgConverts) throws UploadException{
-        ImageFactory.newInstance().scaleMultiHandle(fileName ,company ,imageArgConverts);
+    public static void scaleMultiHandle(String fileName , Company company,List<ImageArgConvert> imageArgConverts) throws Exception{
+        ImageFactory.newInstance().generatesImageHandle(fileName ,company ,imageArgConverts);
     }
 }

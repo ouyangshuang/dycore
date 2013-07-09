@@ -3,6 +3,7 @@ package com.dooioo.upload.utils;
 import com.dooioo.commons.Strings;
 import com.dooioo.commons.io.IoUtils;
 import com.dooioo.upload.exception.UploadException;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -52,6 +53,18 @@ public class FileUtils {
         FileChannel channel = new FileOutputStream(filePath).getChannel();
         channel.write(ByteBuffer.wrap(fileBytes));
         channel.close();
+    }
+
+    /**
+     * 判断文件是否存在
+     * @param fileName
+     * @return
+     */
+    public static boolean exists(String fileName) {
+        if(StringUtils.isEmpty(fileName))
+            return false;
+        File f = new File(fileName);
+        return f.exists();
     }
 
     /**

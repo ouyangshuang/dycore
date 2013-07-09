@@ -168,7 +168,7 @@ public class UploadFactory {
      * @return
      * @throws UploadException
      */
-    public static UploadResult uploadPic(FileItem fileItem, Company company, ImageArgConvert... imageArgConverts) throws UploadException {
+    public static UploadResult uploadPic(FileItem fileItem, Company company, ImageArgConvert... imageArgConverts) throws Exception {
         return uploadPic(fileItem.get(), fileItem.getName(), company, imageArgConverts);
     }
 
@@ -181,7 +181,7 @@ public class UploadFactory {
      * @return
      * @throws UploadException
      */
-    public static UploadResult uploadPic(byte[] data, String fileName, Company company, ImageArgConvert... imageArgConverts) throws UploadException {
+    public static UploadResult uploadPic(byte[] data, String fileName, Company company, ImageArgConvert... imageArgConverts) throws Exception {
         return ImageUpload.upload(data, fileName, company, imageArgConverts);
     }
 
@@ -223,7 +223,7 @@ public class UploadFactory {
      * @param imageArgConverts 缩略图尺寸
      * @throws UploadException
      */
-    public static void asyncGeneratePics(String picPath, Company company, List<ImageArgConvert> imageArgConverts) throws UploadException {
+    public static void asyncGeneratePics(String picPath, Company company, List<ImageArgConvert> imageArgConverts) throws Exception {
         if (imageArgConverts == null || imageArgConverts.size() == 0)
             return;
         ImageUpload.scaleMultiHandle(picPath, company, imageArgConverts);

@@ -8,9 +8,11 @@ import com.dooioo.upload.image.ImageSize;
 import com.dooioo.upload.utils.FileUtils;
 import com.dooioo.upload.utils.UploadConfig;
 import magick.*;
+import org.apache.commons.fileupload.FileUploadException;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +32,14 @@ public class ImageMagick extends AbstractImage {
     }
 
     @Override
-    public void generatesImageHandle(final String fileName, Company company, final ImageArgConvert imageArgConvert) throws UploadException {
+    public void generatesImageHandle(final String fileName, Company company, final ImageArgConvert imageArgConvert) throws Exception {
         generatesImageHandle(fileName, company, new ArrayList<ImageArgConvert>() {{
             add(imageArgConvert);
         }});
     }
 
     @Override
-    public void generatesImageHandle(String fileName, Company company, List<ImageArgConvert> imageArgConverts) throws UploadException {
+    public void generatesImageHandle(String fileName, Company company, List<ImageArgConvert> imageArgConverts) throws Exception {
         //无规格，直接跳过
         if (imageArgConverts == null || imageArgConverts.size() == 0) {
             return;
@@ -45,7 +47,7 @@ public class ImageMagick extends AbstractImage {
         // 首先确保原图存在
         String relationPath = UploadConfig.getInstance().getOriginalDirectory() + FILE_SEPARATOR + fileName;
         String targetPath = UploadConfig.getInstance().getTargetDirectory() + FILE_SEPARATOR + fileName;
-        if (new File(relationPath).exists() == false) {
+        if (!FileUtils.exists(relationPath)) {
             return;
         }
 
@@ -56,9 +58,6 @@ public class ImageMagick extends AbstractImage {
             image = new MagickImage(new ImageInfo(relationPath));
 //            image = new MagickImage(imageInfo);
             splitHandle(image,targetPath,company,imageArgConverts);
-        } catch (Exception e) {
-            LOGGER.error(e);
-            throw new UploadException(e);
         } finally {
             if (image != null) {
                 image.destroyImages();
@@ -100,30 +99,44 @@ public class ImageMagick extends AbstractImage {
         String filename = generalImageExtName(imageArgConvert.getImageSize(), destfilename);
         ImageSize retImageSize = scaleSize(new ImageSize((int) image.getDimension().getWidth(), (int) image.getDimension().getHeight()), imageArgConvert.getImageSize());
         // 定义新图的MagickImage对象
-        MagickImage newimage = image.scaleImage(retImageSize.getWidth(), retImageSize.getHeight());
-        buildWaterMaker(imageArgConvert, newimage,company);
-        newimage = cutImage(imageArgConvert, newimage, retImageSize);
-        newimage.setFileName(filename);
-//        newimage.set
-        ImageInfo imageInfo = new ImageInfo();
-//        imageInfo.set
-//        imageInfo.setQuality(40);
-        newimage.writeImage(imageInfo);
-        newimage.destroyImages();
+        MagickImage newimage = null;
+        try {
+            newimage = image.scaleImage(retImageSize.getWidth(), retImageSize.getHeight());
+            buildWaterMaker(imageArgConvert, newimage,company);
+            newimage = cutImage(imageArgConvert, newimage, retImageSize);
+            newimage.setFileName(filename);
+    //      newimage.set
+            ImageInfo imageInfo = new ImageInfo();
+    //      imageInfo.set
+    //      imageInfo.setQuality(40);
+            newimage.writeImage(imageInfo);
+        }finally {
+            if(newimage != null){
+                newimage.destroyImages();
+            }
+        }
+
     }
 
     @Override
-    public UploadResult upload(byte[] data, String savePath) throws UploadException {
+    public UploadResult upload(byte[] data, String savePath) throws MagickException, FileUploadException {
         MagickImage image = null;
         try {
+            // 写原图
+            try {
+                FileUtils.writeByteToFile(data, savePath);
+            }catch (IOException e){
+                LOGGER.info("图片写入失败", e);
+            }
+
+            //处理原图未上传的异常
+            if(!FileUtils.exists(savePath)){
+                throw new FileUploadException();
+            }
+
             image = new MagickImage(new ImageInfo(), data);
             convert2RGB(image);
-            image.setFileName(savePath);
-            image.writeImage(new ImageInfo());
             return new UploadResult().setWidth((int) image.getDimension().getWidth()).setHeight((int) image.getDimension().getHeight());
-        } catch (Exception e) {
-            LOGGER.error(e);
-            throw new UploadException(e);
         } finally {
             if (image != null)
                 image.destroyImages();
@@ -136,7 +149,7 @@ public class ImageMagick extends AbstractImage {
      * @param fromImage
      * @return
      */
-    private static boolean convert2RGB(MagickImage fromImage) throws MagickException {
+    private static boolean convert2RGB(MagickImage fromImage) {
         try {
             if (fromImage.getColorspace() != ColorspaceType.RGBColorspace) {
                 return fromImage.transformRgbImage(fromImage.getColorspace());

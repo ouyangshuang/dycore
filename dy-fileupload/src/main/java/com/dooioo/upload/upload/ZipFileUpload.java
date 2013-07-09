@@ -2,7 +2,7 @@ package com.dooioo.upload.upload;
 
 import com.dooioo.commons.Dates;
 import com.dooioo.commons.Randoms;
-import com.dooioo.upload.Upload;
+import com.dooioo.upload.UploadResult;
 import com.dooioo.upload.exception.UploadException;
 import com.dooioo.upload.utils.FileUtils;
 import com.dooioo.upload.utils.UploadConfig;
@@ -33,7 +33,7 @@ public class ZipFileUpload {
      * @return
      * @throws Exception
      */
-    public static Upload upload(byte[] data , String origiFileName,boolean isunzip) throws UploadException {
+    public static UploadResult upload(byte[] data , String origiFileName,boolean isunzip) throws UploadException {
         if(!origiFileName.toLowerCase().endsWith("zip") || !origiFileName.toLowerCase().endsWith("rar")){
             throw new UploadException("请上传ZIP文件");
         }
@@ -44,7 +44,7 @@ public class ZipFileUpload {
             String  targetPath =   Randoms.getPrimaryKey();
             String  targetFileName =   targetFilePath + targetPath + FILE_EXT +  FileUtils.getFileExtName(origiFileName);
             FileUtils.writeByteToFile(data,targetFileName);
-            Upload upload = new Upload().setOrigiName(origiFileName).setTargetName(targetFileName);
+            UploadResult upload = new UploadResult().setOrigiName(origiFileName).setTargetName(targetFileName);
             if(!isunzip){
                 return upload;
             }
@@ -117,7 +117,7 @@ public class ZipFileUpload {
     /**
      * 上传文件
      */
-    public static Upload upload(FileItem fileItem ,boolean isunzip) throws UploadException {
+    public static UploadResult upload(FileItem fileItem ,boolean isunzip) throws UploadException {
         return upload(fileItem.get(), fileItem.getName(),isunzip);
     }
 
