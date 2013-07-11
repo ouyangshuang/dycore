@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <groupId>dycore</groupId>
     <artifactId>dy-web</artifactId>
-    <version>2.2.1</version>
+    <version>2.3.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
