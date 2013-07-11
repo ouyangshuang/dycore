@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>dy-fileupload</artifactId>
-    <version>beta-0.0.5</version>
+    <version>beta-0.1.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>com.dooioo</groupId>
             <artifactId>jmagick</artifactId>
-            <version>2.0</version>
+            <version>6.3.9-q16</version>
         </dependency>
         <dependency>
             <groupId>dycore</groupId>

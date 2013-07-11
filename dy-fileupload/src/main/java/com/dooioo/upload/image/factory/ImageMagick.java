@@ -194,19 +194,19 @@ public class ImageMagick extends AbstractImage {
         logoimage.setDelay(0);
         switch (imageArgConvert.getLogoPosition()) {
             case MiddleCenter: // 正中
-                newimage.compositeImage(CompositeOperator.OutCompositeOp, logoimage, ((int) newimagedimension.getWidth() - (int) logodimension.getWidth()) / 2, ((int) newimagedimension.getHeight() - (int) logodimension.getHeight()) / 2);
+                newimage.compositeImage(CompositeOperator.AtopCompositeOp, logoimage, ((int) newimagedimension.getWidth() - (int) logodimension.getWidth()) / 2, ((int) newimagedimension.getHeight() - (int) logodimension.getHeight()) / 2);
                 break;
             case LeftTop: // 左上
-                newimage.compositeImage(CompositeOperator.OutCompositeOp, logoimage, 0, 0);
+                newimage.compositeImage(CompositeOperator.AtopCompositeOp, logoimage, 0, 0);
                 break;
             case RightTop: // 右上
-                newimage.compositeImage(CompositeOperator.OutCompositeOp, logoimage, ((int) newimagedimension.getWidth() - (int) logodimension.getWidth()), 0);
+                newimage.compositeImage(CompositeOperator.AtopCompositeOp, logoimage, ((int) newimagedimension.getWidth() - (int) logodimension.getWidth()), 0);
                 break;
             case LeftBottom: // 左下
-                newimage.compositeImage(CompositeOperator.OutCompositeOp, logoimage, 0, ((int) newimagedimension.getHeight() - (int) logodimension.getHeight()));
+                newimage.compositeImage(CompositeOperator.AtopCompositeOp, logoimage, 0, ((int) newimagedimension.getHeight() - (int) logodimension.getHeight()));
                 break;
             case RightBottom: // 右下
-                newimage.compositeImage(CompositeOperator.OutCompositeOp, logoimage, ((int) newimagedimension.getWidth() - (int) logodimension.getWidth()), ((int) newimagedimension.getHeight() - (int) logodimension.getHeight()));
+                newimage.compositeImage(CompositeOperator.AtopCompositeOp, logoimage, ((int) newimagedimension.getWidth() - (int) logodimension.getWidth()), ((int) newimagedimension.getHeight() - (int) logodimension.getHeight()));
                 break;
             case Tile: //平铺
                 int startX = 0;
@@ -215,7 +215,7 @@ public class ImageMagick extends AbstractImage {
                 int height = newimagedimension.height;
 
                 while (startY <= height) {
-                    newimage.compositeImage(CompositeOperator.OutCompositeOp, logoimage, startX, startY);
+                    newimage.compositeImage(CompositeOperator.AtopCompositeOp, logoimage, startX, startY);
                     startX += (logodimension.width * 1);
                     if (startX >= width) {
                         startY += logodimension.height * 1;
