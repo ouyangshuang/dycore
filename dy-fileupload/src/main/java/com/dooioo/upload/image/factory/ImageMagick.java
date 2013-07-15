@@ -184,7 +184,7 @@ public class ImageMagick extends AbstractImage {
         }
 
         //宽大于600，使用大图水印
-        if(imageArgConvert.getImageSize().getWidth() > 600 && newimage.getDimension().getWidth() > 600){
+        if( (imageArgConvert.getImageSize().getWidth() > 600 || imageArgConvert.getImageSize().getWidth() <= 0 ) && newimage.getDimension().getWidth() > 600){
             logoinfo = new ImageInfo(UploadConfig.getInstance().getSuperLogoPath(company));
         }
 

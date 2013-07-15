@@ -63,6 +63,6 @@ public class UploadFactoryTest {
         imageArgConverts.add(new ImageArgConvert(ImageSize.IMAGE_SIZE_500x375, Logo.Logo));
         imageArgConverts.add(new ImageArgConvert(ImageSize.IMAGE_SIZE_900x675, Logo.Logo));
         imageArgConverts.add(new ImageArgConvert(ImageSize.IMAGE_SIZE_100x75, Logo.Logo));
-        UploadFactory.asyncGeneratePics("20130711/20130711152634300RXCAH5IMVKB8NNY.jpg",Company.DOOIOO,imageArgConverts);
+        UploadFactory.asyncGeneratePics("20130711/201307111624378052996.jpg",Company.DOOIOO,imageArgConverts);
     }
 }
