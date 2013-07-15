@@ -57,7 +57,7 @@ public class ImageSize {
     /**
      * 原图
      */
-    public static final ImageSize IMAGE_SIZE_NO = new ImageSize(-1,-1);
+    public static final ImageSize IMAGE_SIZE_SOURCE = new ImageSize(-1,-1);
     /**
      * 图片宽
      */
