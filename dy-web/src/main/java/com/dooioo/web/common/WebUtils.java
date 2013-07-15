@@ -62,10 +62,11 @@ public class WebUtils {
      */
     public static Integer findParamInteger(ServletRequest request, String name) {
         String paramValue = findParamStr(request, name);
-        Integer paramValueInt = null;
+        if( Strings.isEmpty(paramValue)){
+            return null;
+        }
         try{
-            paramValueInt = Integer.parseInt(paramValue);
-            return Strings.isEmpty(paramValue) ? null : paramValueInt;
+            return Integer.parseInt(paramValue);
         } catch (Exception e) {
             log.error(e);
             return null;
@@ -96,10 +97,11 @@ public class WebUtils {
      */
     public static Double findParamDouble(ServletRequest request, String name) {
         String paramValue = findParamStr(request, name);
-        Double paramValueInt = null;
+        if(Strings.isEmpty(paramValue)){
+            return null;
+        }
         try{
-            paramValueInt = Double.parseDouble(paramValue);
-            return Strings.isEmpty(paramValue) ? null : paramValueInt;
+            return Double.parseDouble(paramValue);
         } catch (Exception e) {
             log.error(e);
             return null;
@@ -131,10 +133,11 @@ public class WebUtils {
      */
     public static Boolean findParamBoolean(ServletRequest request, String name) {
         String paramValue = findParamStr(request, name);
-        Boolean paramValueBoolean = null;
+        if(Strings.isEmpty(paramValue)){
+            return  null;
+        }
         try{
-            paramValueBoolean = Boolean.parseBoolean(paramValue);
-            return Strings.isEmpty(paramValue) ? null : paramValueBoolean;
+            return Boolean.parseBoolean(paramValue);
         } catch (Exception e) {
             log.error(e);
             return null;
