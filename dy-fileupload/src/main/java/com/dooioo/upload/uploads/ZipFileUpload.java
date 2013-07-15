@@ -22,7 +22,8 @@ import java.util.zip.ZipInputStream;
 */
 public class ZipFileUpload {
     private static final Logger LOGGER = Logger.getLogger(DocUpload.class);
-    private static final String DATE_STYLE  = "yyyyMMdd";
+    private static final String DATE_YEAR_STYLE  = "yyyy";
+    private static final String DATE_MONTH_DAY_STYLE  = "MMdd";
     private static final String FILE_SEPARATOR = "/";
     private static final String FILE_EXT = ".";
 
@@ -39,7 +40,7 @@ public class ZipFileUpload {
         }
         try {
             //上传ZIP
-            String  datePath = Dates.getDateTime(DATE_STYLE);
+            String  datePath = Dates.getDateTime(DATE_YEAR_STYLE) + "/" + Dates.getDateTime(DATE_MONTH_DAY_STYLE);
             String targetFilePath = UploadConfig.getInstance().getFlashDirectory() + FILE_SEPARATOR + datePath + FILE_SEPARATOR ;
             FileUtils.existsAndCreate(targetFilePath);
             String  targetPath =   Randoms.getPrimaryKey();

@@ -1,6 +1,5 @@
 package com.dooioo.upload.image.factory;
 
-import com.dooioo.upload.Company;
 import com.dooioo.upload.exception.UploadException;
 import com.dooioo.upload.image.ImageArgConvert;
 import com.dooioo.upload.UploadResult;
@@ -12,7 +11,6 @@ import magick.MagickException;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -44,7 +42,7 @@ public abstract class AbstractImage {
      * @param fileName        图片路径
      * @param imageArgConvert 生成规格
      */
-    public abstract void generatesImageHandle(String fileName, Company company, ImageArgConvert imageArgConvert) throws Exception;
+    public abstract void generatesImageHandle(String fileName, ImageArgConvert imageArgConvert) throws Exception;
 
     /**
      * 生成多张缩略图
@@ -52,7 +50,7 @@ public abstract class AbstractImage {
      * @param fileName         图片路径
      * @param imageArgConverts 生成规格
      */
-    public abstract void generatesImageHandle(String fileName, Company company, List<ImageArgConvert> imageArgConverts) throws Exception;
+    public abstract void generatesImageHandle(String fileName, List<ImageArgConvert> imageArgConverts) throws Exception;
 
     /**
      * 生成原图

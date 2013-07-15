@@ -20,7 +20,8 @@ import java.io.File;
  */
 public class RecordUpload {
     private static final Logger LOGGER = Logger.getLogger(DocUpload.class);
-    private static final String DATE_STYLE  = "yyyyMMdd";
+    private static final String DATE_YEAR_STYLE  = "yyyy";
+    private static final String DATE_MONTH_DAY_STYLE  = "MMdd";
     private static final String FILE_SEPARATOR = "/";
     private static final String FILE_EXT = ".";
 
@@ -29,7 +30,7 @@ public class RecordUpload {
      */
     public static UploadResult upload(byte[] fileBytes , String origiFileName) throws UploadException {
         try {
-            String datepath =  Dates.getDateTime(DATE_STYLE);
+            String datepath =  Dates.getDateTime(DATE_YEAR_STYLE) + "/" + Dates.getDateTime(DATE_MONTH_DAY_STYLE);
             String recordName=  Randoms.getPrimaryKey() + FILE_EXT + FileUtils.getFileExtName(origiFileName);
 
             FileUtils.existsAndCreate( UploadConfig.getInstance().getRecordDirectory() + FILE_SEPARATOR + datepath + FILE_SEPARATOR );

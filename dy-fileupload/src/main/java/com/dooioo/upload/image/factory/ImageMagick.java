@@ -1,8 +1,6 @@
 package com.dooioo.upload.image.factory;
 
-import com.dooioo.upload.Company;
 import com.dooioo.upload.UploadResult;
-import com.dooioo.upload.exception.UploadException;
 import com.dooioo.upload.image.ImageArgConvert;
 import com.dooioo.upload.image.ImageSize;
 import com.dooioo.upload.utils.FileUtils;
@@ -11,7 +9,6 @@ import magick.*;
 import org.apache.commons.fileupload.FileUploadException;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +29,14 @@ public class ImageMagick extends AbstractImage {
     }
 
     @Override
-    public void generatesImageHandle(final String fileName, Company company, final ImageArgConvert imageArgConvert) throws Exception {
-        generatesImageHandle(fileName, company, new ArrayList<ImageArgConvert>() {{
+    public void generatesImageHandle(final String fileName,final ImageArgConvert imageArgConvert) throws Exception {
+        generatesImageHandle(fileName, new ArrayList<ImageArgConvert>() {{
             add(imageArgConvert);
         }});
     }
 
     @Override
-    public void generatesImageHandle(String fileName, Company company, List<ImageArgConvert> imageArgConverts) throws Exception {
+    public void generatesImageHandle(String fileName, List<ImageArgConvert> imageArgConverts) throws Exception {
         //无规格，直接跳过
         if (imageArgConverts == null || imageArgConverts.size() == 0) {
             return;
@@ -57,7 +54,7 @@ public class ImageMagick extends AbstractImage {
 //            imageInfo.setQuality(6);
             image = new MagickImage(new ImageInfo(relationPath));
 //            image = new MagickImage(imageInfo);
-            splitHandle(image,targetPath,company,imageArgConverts);
+            splitHandle(image,targetPath,imageArgConverts);
         } finally {
             if (image != null) {
                 image.destroyImages();
@@ -72,7 +69,7 @@ public class ImageMagick extends AbstractImage {
      * @param relativepath
      * @throws Exception
      */
-    private void splitHandle(MagickImage image, String relativepath ,Company company, List<ImageArgConvert> imageArgConverts) throws Exception {
+    private void splitHandle(MagickImage image, String relativepath , List<ImageArgConvert> imageArgConverts) throws Exception {
         convert2RGB(image);
         //生成文件目录
         String relationPath = relativepath.substring(0, relativepath.lastIndexOf("/"));
@@ -81,7 +78,7 @@ public class ImageMagick extends AbstractImage {
         // 根据图片类型获得需要生成的图片组
         for (ImageArgConvert imageArgConvert : imageArgConverts) {
             // 遍历生成图片
-            imageConvert(image, relativepath ,company, imageArgConvert);
+            imageConvert(image, relativepath, imageArgConvert);
 
             //TODO:未实现
             if (imageArgConvert.isMirror()) {
@@ -95,14 +92,14 @@ public class ImageMagick extends AbstractImage {
      *
      * @throws Exception
      */
-    private void imageConvert(MagickImage image, String destfilename,Company company, ImageArgConvert imageArgConvert) throws Exception {
+    private void imageConvert(MagickImage image, String destfilename,ImageArgConvert imageArgConvert) throws Exception {
         String filename = generalImageExtName(imageArgConvert.getImageSize(), destfilename);
         ImageSize retImageSize = scaleSize(new ImageSize((int) image.getDimension().getWidth(), (int) image.getDimension().getHeight()), imageArgConvert.getImageSize());
         // 定义新图的MagickImage对象
         MagickImage newimage = null;
         try {
             newimage = image.scaleImage(retImageSize.getWidth(), retImageSize.getHeight());
-            buildWaterMaker(imageArgConvert, newimage,company);
+            buildWaterMaker(imageArgConvert, newimage);
             newimage = cutImage(imageArgConvert, newimage, retImageSize);
             newimage.setFileName(filename);
     //      newimage.set
@@ -168,7 +165,7 @@ public class ImageMagick extends AbstractImage {
      * @param newimage
      * @throws MagickException
      */
-    private void buildWaterMaker(ImageArgConvert imageArgConvert, MagickImage newimage , Company company) throws MagickException {
+    private void buildWaterMaker(ImageArgConvert imageArgConvert, MagickImage newimage) throws MagickException {
         if (!hasWaterMaker(imageArgConvert)) {
             return;
         }
@@ -176,16 +173,16 @@ public class ImageMagick extends AbstractImage {
         // 判断是否打平铺水印
         switch (imageArgConvert.getLogoPosition()) {
             case Tile:
-                logoinfo = new ImageInfo(UploadConfig.getInstance().getTileLogoPath(company));
+                logoinfo = new ImageInfo(UploadConfig.getInstance().getTileLogoPath());
                 break;
             default:
-                logoinfo = new ImageInfo(UploadConfig.getInstance().getLogoHuge(company));
+                logoinfo = new ImageInfo(UploadConfig.getInstance().getLogoHuge());
                 break;
         }
 
         //宽大于600，使用大图水印
         if( (imageArgConvert.getImageSize().getWidth() > 600 || imageArgConvert.getImageSize().getWidth() <= 0 ) && newimage.getDimension().getWidth() > 600){
-            logoinfo = new ImageInfo(UploadConfig.getInstance().getSuperLogoPath(company));
+            logoinfo = new ImageInfo(UploadConfig.getInstance().getSuperLogoPath());
         }
 
         MagickImage logoimage = new MagickImage(logoinfo);

@@ -18,7 +18,8 @@ import org.apache.log4j.Logger;
  */
 public final class DocUpload{
     private static final Logger LOGGER = Logger.getLogger(DocUpload.class);
-    private static final String DATE_STYLE  = "yyyyMMdd";
+    private static final String DATE_YEAR_STYLE  = "yyyy";
+    private static final String DATE_MONTH_DAY_STYLE  = "MMdd";
     private static final String FILE_SEPARATOR = "/";
     private static final String FILE_EXT = ".";
 
@@ -27,7 +28,7 @@ public final class DocUpload{
      */
     public static UploadResult upload(byte[] fileBytes , String origiFileName) throws UploadException {
         try {
-            String path = Dates.getDateTime(DATE_STYLE);
+            String path = Dates.getDateTime(DATE_YEAR_STYLE) + "/" + Dates.getDateTime(DATE_MONTH_DAY_STYLE);
             String fileName = Randoms.getPrimaryKey() + FILE_EXT + FileUtils.getFileExtName(origiFileName);
             FileUtils.existsAndCreate(UploadConfig.getInstance().getDocDirectory() + FILE_SEPARATOR + path);
             String targetFileName = UploadConfig.getInstance().getDocDirectory() + FILE_SEPARATOR + path + FILE_SEPARATOR + fileName;

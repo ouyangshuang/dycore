@@ -1,7 +1,5 @@
 package com.dooioo.upload.utils;
 
-import com.dooioo.commons.Strings;
-import com.dooioo.upload.Company;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -78,15 +76,15 @@ public class UploadConfig {
         return properties.getProperty("flashPath","");
     }
 
-    public String getLogoHuge(Company company){
-        return properties.getProperty(company.getValue()+".logoHuge");
+    public String getLogoHuge(){
+        return properties.getProperty("logoHuge");
     }
 
-    public String getTileLogoPath(Company company){
-        return properties.getProperty(company.getValue()+".tileLogoPath");
+    public String getTileLogoPath(){
+        return properties.getProperty("tileLogoPath");
     }
 
-    public String getSuperLogoPath(Company company){
-        return properties.getProperty(company.getValue()+".superLogoPath");
+    public String getSuperLogoPath(){
+        return properties.getProperty("superLogoPath");
     }
 }
