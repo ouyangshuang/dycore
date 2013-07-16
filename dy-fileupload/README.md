@@ -46,13 +46,13 @@ jar包及文档 [下载](http://192.168.0.133:10150/nexus/index.html#nexus-searc
 ###代码调用###
 #####*上传并且生成缩略图片*#####
     //TODO:生成缩略图目前只支持同步生成
-    UploadFactory.uploadPic(picdata,"dooioo.jpg",Company.DOOIOO,new ImageArgConvert(ImageSize.IMAGE_SIZE_200x150, Logo.Logo),new ImageArgConvert(ImageSize.IMAGE_SIZE_100x75));//1
-    UploadFactory.uploadPic(fileitem,Company.DOOIOO,new ImageArgConvert(ImageSize.IMAGE_SIZE_200x150, Logo.Logo),new ImageArgConvert(ImageSize.IMAGE_SIZE_100x75));//2
+    UploadFactory.uploadPic(picdata,"dooioo.jpg",new ImageArgConvert(ImageSize.IMAGE_SIZE_200x150, Logo.Logo),new ImageArgConvert(ImageSize.IMAGE_SIZE_100x75));//1
+    UploadFactory.uploadPic(fileitem,new ImageArgConvert(ImageSize.IMAGE_SIZE_200x150, Logo.Logo),new ImageArgConvert(ImageSize.IMAGE_SIZE_100x75));//2
 
     List<ImageArgConvert>  imageArgConverts = new ArrayList<ImageArgConvert>(); //3
     imageArgConverts.add(new ImageArgConvert(ImageSize.IMAGE_SIZE_900x675, Logo.Logo));//4
     imageArgConverts.add(new ImageArgConvert(ImageSize.IMAGE_SIZE_100x75, Logo.Logo));//5
-    UploadFactory.asyncGeneratePics("20130626/20130626163415210ERCAQ3RSXRB2Q1D.jpg",Company.DOOIOO,imageArgConverts); //6
+    UploadFactory.asyncGeneratePics("20130626/20130626163415210ERCAQ3RSXRB2Q1D.jpg",imageArgConverts); //6
 
 ImageArgConvert对象：'
    
@@ -66,21 +66,18 @@ ImageArgConvert对象：'
 
     参数1：上传文件字节 eg:picdata
     参数2：上传文件名称 eg:dooioo.jpg
-    参数3：公司类型，Company.DOOIOO、Company.IDERONG 所属公司,用于水印的打印
-    参数4~n:ImageArgConvert对象，生成各种尺寸缩略图
+    参数3~n:ImageArgConvert对象，生成各种尺寸缩略图
 
 代码块2：
 
     参数1：上传文件流 eg:fileitem
-    参数2：公司类型，Company.DOOIOO、Company.IDERONG 所属公司,用于水印的打印
-    参数3~n:ImageArgConvert对象，生成各种尺寸缩略图
+    参数2~n:ImageArgConvert对象，生成各种尺寸缩略图
 
 代码块3～6：
 
     异步生成缩略图 //TODO：后期有单独图片服务，抽离
     参数1：上传原图路径，eg:"20130626/20130626163415210ERCAQ3RSXRB2Q1D.jpg"
-    参数2：公司类型，Company.DOOIOO、Company.IDERONG 所属公司,用于水印的打印
-    参数3：List<ImageArgConvert>对象，生成各种尺寸缩略图
+    参数2：List<ImageArgConvert>对象，生成各种尺寸缩略图
 
 
 **上传、录音、zip、rar等文档文件，无需生成缩略图**
