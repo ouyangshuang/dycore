@@ -36,22 +36,12 @@ jar包及文档 [下载](http://192.168.0.133:10150/nexus/index.html#nexus-searc
     #flash文件访问前缀 zip,rar文件
     flashPath=/flashs/
 
-    ###############德佑########################
     #水印图片
-    dooioo.logoHuge=E:/data/logo_huge.png
+    logoHuge=E:/data/logo_huge.png
     #图片+标题
-    dooioo.tileLogoPath=E:/data/logo_tile.png
+    tileLogoPath=E:/data/logo_tile.png
     #大图水印
-    dooioo.superLogoPath=E:/data/logo_super.png
-
-
-    ###############德融########################
-    #水印图片
-    derong.logoHuge=E:/data/logo_huge.png
-    #图片+标题
-    derong.tileLogoPath=E:/data/logo_tile.png
-    #大图水印
-    derong.superLogoPath=E:/data/logo_super.png
+    superLogoPath=E:/data/logo_super.png
 
 ###代码调用###
 #####*上传并且生成缩略图片*#####
@@ -66,7 +56,7 @@ jar包及文档 [下载](http://192.168.0.133:10150/nexus/index.html#nexus-searc
 
 ImageArgConvert对象：'
    
-	ImageSize 图片尺寸   
+    ImageSize 图片尺寸   
     Logo:水印   
     LogoPosition：水印位置   
     async:是否异步  //TODO:异步未实现  
