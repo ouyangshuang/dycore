@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>dy-fileupload</artifactId>
-    <version>beta-0.2.0</version>
+    <version>beta-0.2.2</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,6 +37,7 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.9</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>
@@ -59,11 +60,13 @@
             <groupId>com.dooioo</groupId>
             <artifactId>jmagick</artifactId>
             <version>6.3.9-q16</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>dycore</groupId>
             <artifactId>dy-commons</artifactId>
             <version>1.2.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
