@@ -79,8 +79,6 @@ public class ImageSize {
        this.height = height;
     }
 
-
-
     public int getWidth() {
         return width;
     }

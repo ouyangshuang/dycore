@@ -1,7 +1,5 @@
 package com.dooioo.upload.uploads;
 
-import com.dooioo.commons.Dates;
-import com.dooioo.commons.Randoms;
 import com.dooioo.upload.UploadResult;
 import com.dooioo.upload.exception.UploadException;
 import com.dooioo.upload.utils.FileUtils;
@@ -18,22 +16,19 @@ import org.apache.log4j.Logger;
  */
 public final class DocUpload{
     private static final Logger LOGGER = Logger.getLogger(DocUpload.class);
-    private static final String DATE_YEAR_STYLE  = "yyyy";
-    private static final String DATE_MONTH_DAY_STYLE  = "MMdd";
-    private static final String FILE_SEPARATOR = "/";
-    private static final String FILE_EXT = ".";
 
     /**
      * 上传文件
      */
     public static UploadResult upload(byte[] fileBytes , String origiFileName) throws UploadException {
         try {
-            String path = Dates.getDateTime(DATE_YEAR_STYLE) + "/" + Dates.getDateTime(DATE_MONTH_DAY_STYLE);
-            String fileName = Randoms.getPrimaryKey() + FILE_EXT + FileUtils.getFileExtName(origiFileName);
-            FileUtils.existsAndCreate(UploadConfig.getInstance().getDocDirectory() + FILE_SEPARATOR + path);
-            String targetFileName = UploadConfig.getInstance().getDocDirectory() + FILE_SEPARATOR + path + FILE_SEPARATOR + fileName;
+            String path = FileUtils.createDatePath();
+            String fileName = FileUtils.genrateFileName() + FileUtils.FILE_EXT + FileUtils.getFileExtName(origiFileName);
+
+            FileUtils.existsAndCreate(UploadConfig.getInstance().getDocDirectory() + FileUtils.FILE_SEPARATOR + path);
+            String targetFileName = UploadConfig.getInstance().getDocDirectory() + FileUtils.FILE_SEPARATOR + path + FileUtils.FILE_SEPARATOR + fileName;
             FileUtils.writeByteToFile(fileBytes,targetFileName);
-            return new UploadResult().setOrigiName(origiFileName).setTargetName(UploadConfig.getInstance().getDocPath() + path + FILE_SEPARATOR + fileName);
+            return new UploadResult().setOrigiName(origiFileName).setTargetName(UploadConfig.getInstance().getDocPath() + path + FileUtils.FILE_SEPARATOR + fileName);
         } catch (Exception e) {
             LOGGER.error(e);
             throw new UploadException(e);

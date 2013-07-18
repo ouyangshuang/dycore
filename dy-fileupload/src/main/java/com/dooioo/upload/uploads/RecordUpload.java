@@ -1,15 +1,11 @@
 package com.dooioo.upload.uploads;
 
-import com.dooioo.commons.Dates;
-import com.dooioo.commons.Randoms;
 import com.dooioo.upload.UploadResult;
 import com.dooioo.upload.exception.UploadException;
 import com.dooioo.upload.utils.FileUtils;
 import com.dooioo.upload.utils.UploadConfig;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
-
-import java.io.File;
 
 /**
  * Created with IntelliJ IDEA at 13-6-24 下午3:54.
@@ -20,23 +16,19 @@ import java.io.File;
  */
 public class RecordUpload {
     private static final Logger LOGGER = Logger.getLogger(DocUpload.class);
-    private static final String DATE_YEAR_STYLE  = "yyyy";
-    private static final String DATE_MONTH_DAY_STYLE  = "MMdd";
-    private static final String FILE_SEPARATOR = "/";
-    private static final String FILE_EXT = ".";
 
     /**
      * 上传文件
      */
     public static UploadResult upload(byte[] fileBytes , String origiFileName) throws UploadException {
         try {
-            String datepath =  Dates.getDateTime(DATE_YEAR_STYLE) + "/" + Dates.getDateTime(DATE_MONTH_DAY_STYLE);
-            String recordName=  Randoms.getPrimaryKey() + FILE_EXT + FileUtils.getFileExtName(origiFileName);
+            String datePath =  FileUtils.createDatePath();
+            String recordName= FileUtils.genrateFileName() + FileUtils.FILE_EXT + FileUtils.getFileExtName(origiFileName);
 
-            FileUtils.existsAndCreate( UploadConfig.getInstance().getRecordDirectory() + FILE_SEPARATOR + datepath + FILE_SEPARATOR );
-            String targetFileName = UploadConfig.getInstance().getRecordDirectory() + FILE_SEPARATOR + datepath + FILE_SEPARATOR + recordName;
+            FileUtils.existsAndCreate( UploadConfig.getInstance().getRecordDirectory() + FileUtils.FILE_SEPARATOR + datePath + FileUtils.FILE_SEPARATOR );
+            String targetFileName = UploadConfig.getInstance().getRecordDirectory() + FileUtils.FILE_SEPARATOR + datePath + FileUtils.FILE_SEPARATOR + recordName;
             FileUtils.writeByteToFile(fileBytes,targetFileName);
-            return new UploadResult().setOrigiName(origiFileName).setTargetName(UploadConfig.getInstance().getRecordPath() + datepath + FILE_SEPARATOR + recordName);
+            return new UploadResult().setOrigiName(origiFileName).setTargetName(UploadConfig.getInstance().getRecordPath() + datePath + FileUtils.FILE_SEPARATOR + recordName);
         } catch (Exception e) {
             LOGGER.error(e);
             throw  new UploadException(e);

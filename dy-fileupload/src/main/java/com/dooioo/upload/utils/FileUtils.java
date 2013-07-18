@@ -1,5 +1,6 @@
 package com.dooioo.upload.utils;
 
+import com.dooioo.commons.Dates;
 import com.dooioo.commons.Strings;
 import com.dooioo.commons.io.IoUtils;
 import com.dooioo.upload.exception.UploadException;
@@ -9,6 +10,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.UUID;
 
 /**
  * Created with IntelliJ IDEA at 13-6-24 下午3:28.
@@ -18,6 +20,12 @@ import java.nio.channels.FileChannel;
  *        To change this template use File | Settings | File Templates.
  */
 public class FileUtils {
+    public static final String FILE_SEPARATOR = "/";
+    public static final String FILE_EXT = ".";
+
+    private static final String DATE_YEAR_STYLE  = "yyyy";
+    private static final String DATE_MONTH_DAY_STYLE  = "MMdd";
+
     /**
      * 获取文件扩展名
      * @return 文件扩展名
@@ -72,5 +80,13 @@ public class FileUtils {
      */
     public static byte[] readFileToByte(String path) throws IOException {
         return IoUtils.copyToByteArray(new FileInputStream(path));
+    }
+
+    public static String createDatePath(){
+        return  Dates.getDateTime(DATE_YEAR_STYLE) + FILE_SEPARATOR + Dates.getDateTime(DATE_MONTH_DAY_STYLE);
+    }
+
+    public static String genrateFileName(){
+        return UUID.randomUUID().toString().replaceAll("-","").toUpperCase();
     }
 }

@@ -21,19 +21,47 @@ public class UploadConfig {
     private String docDirectory;
     private String recordDirectory;
     private String flashDirectory;
+
+    private String docPath;
+    private String recordPath;
+    private String flashPath;
+
+    private String logoHuge;
+    private String tileLogoPath;
+    private String superLogoPath;
+
     private Properties properties;
 
     private UploadConfig(){
         properties= new Properties();
         try {
             properties.load(this.getClass().getClassLoader().getResourceAsStream("upload.properties"));
-            originalDirectory = properties.getProperty("originalDirectory");
-            targetDirectory = properties.getProperty("targetDirectory");
-            docDirectory = properties.getProperty("docDirectory");
-            recordDirectory = properties.getProperty("recordDirectory");
-            flashDirectory = properties.getProperty("flashDirectory");
+            originalDirectory = properties.getProperty("originalDirectory","/origimagesdisk/");
+            targetDirectory = properties.getProperty("targetDirectory","/imagesdisk/");
+            docDirectory = properties.getProperty("docDirectory","/docsdisk/");
+            recordDirectory = properties.getProperty("recordDirectory","/recorddisk/");
+            flashDirectory = properties.getProperty("flashDirectory","/flashdisk/");
+
+            docPath =  properties.getProperty("docPath","/docs/");
+            flashPath =  properties.getProperty("flashPath","/flashs/");
+            recordPath = properties.getProperty("recordPath","/records/");
+
+            logoHuge =  properties.getProperty("logoHuge","/files131/images/logo_huge.png");
+            tileLogoPath =  properties.getProperty("logoHuge","/files131/images/logo_tile.png");
+            superLogoPath =  properties.getProperty("logoHuge","/files131/images/logo_super.png");
         } catch (IOException e) {
             LOGGER.error("UploadConfig -> init",e);
+            originalDirectory = "/origimagesdisk/";
+            targetDirectory = "/imagesdisk/";
+            docDirectory = "/docsdisk/";
+            recordDirectory = "/recorddisk/";
+            flashDirectory = "/flashdisk/";
+            docPath =  "/docs/";
+            flashPath =  "/flashs/";
+            recordPath = "/records/";
+            logoHuge =  "/files131/images/logo_huge.png";
+            tileLogoPath =  "/files131/images/logo_tile.png";
+            superLogoPath =  "/files131/images/logo_super.png";
         }
     }
 
@@ -65,26 +93,26 @@ public class UploadConfig {
     }
 
     public String getDocPath() {
-        return properties.getProperty("docPath","");
+        return docPath;
     }
 
     public String getRecordPath() {
-        return properties.getProperty("recordPath","");
+        return recordPath;
     }
 
     public String getFlashPath() {
-        return properties.getProperty("flashPath","");
+        return flashPath;
     }
 
     public String getLogoHuge(){
-        return properties.getProperty("logoHuge");
+        return logoHuge;
     }
 
     public String getTileLogoPath(){
-        return properties.getProperty("tileLogoPath");
+        return tileLogoPath;
     }
 
     public String getSuperLogoPath(){
-        return properties.getProperty("superLogoPath");
+        return superLogoPath;
     }
 }

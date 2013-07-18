@@ -30,14 +30,17 @@ public class ImageArgConvert {
       */
     private boolean mirror = false;
 
+    private int quality = 100;
+
     public ImageArgConvert(){
+        this.quality = 100;
     }
 
     /**
      * @param imageSize 图片尺寸
      */
     public ImageArgConvert(ImageSize imageSize) {
-        this(imageSize, Logo.None, LogoPosition.MiddleCenter,false);
+        this(imageSize, Logo.Logo, LogoPosition.MiddleCenter,false);
     }
 
     /**
@@ -45,7 +48,7 @@ public class ImageArgConvert {
      * @param async 异步压缩
      */
     public ImageArgConvert(ImageSize imageSize,boolean async) {
-        this(imageSize, Logo.None, LogoPosition.MiddleCenter,async);
+        this(imageSize, Logo.Logo, LogoPosition.MiddleCenter,async);
     }
 
     /**
@@ -84,10 +87,15 @@ public class ImageArgConvert {
      * @param async 异步压缩
      */
     public ImageArgConvert(ImageSize imageSize, Logo logo, LogoPosition logoPosition, boolean async) {
+        this(imageSize,logo,logoPosition,async,100);
+    }
+
+    public ImageArgConvert(ImageSize imageSize, Logo logo, LogoPosition logoPosition, boolean async , int quality) {
         this.imageSize = imageSize;
         this.logo = logo;
         this.logoPosition = logoPosition;
         this.async = async;
+        this.quality = quality;
     }
 
     public ImageSize getImageSize() {
@@ -128,5 +136,13 @@ public class ImageArgConvert {
 
     public void setMirror(boolean mirror) {
         this.mirror = mirror;
+    }
+
+    public int getQuality() {
+        return quality;
+    }
+
+    public void setQuality(int quality) {
+        this.quality = quality;
     }
 }

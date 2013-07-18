@@ -37,23 +37,20 @@ public class ImageMagick extends AbstractImage {
 
     @Override
     public void generatesImageHandle(String fileName, List<ImageArgConvert> imageArgConverts) throws Exception {
-        //无规格，直接跳过
         if (imageArgConverts == null || imageArgConverts.size() == 0) {
             return;
         }
-        // 首先确保原图存在
-        String relationPath = UploadConfig.getInstance().getOriginalDirectory() + FILE_SEPARATOR + fileName;
-        String targetPath = UploadConfig.getInstance().getTargetDirectory() + FILE_SEPARATOR + fileName;
+
+        String relationPath = originalDirectory + FILE_SEPARATOR + fileName;
+        String targetPath = tragetDirectory + FILE_SEPARATOR + fileName;
+
         if (!FileUtils.exists(relationPath)) {
             return;
         }
 
         MagickImage image = null;
         try {
-//            ImageInfo imageInfo = new ImageInfo(relationPath);
-//            imageInfo.setQuality(6);
             image = new MagickImage(new ImageInfo(relationPath));
-//            image = new MagickImage(imageInfo);
             splitHandle(image,targetPath,imageArgConverts);
         } finally {
             if (image != null) {
@@ -81,8 +78,8 @@ public class ImageMagick extends AbstractImage {
             imageConvert(image, relativepath, imageArgConvert);
 
             //TODO:未实现
-            if (imageArgConvert.isMirror()) {
-            }
+//            if (imageArgConvert.isMirror()) {
+//            }
         }
     }
 
@@ -95,6 +92,7 @@ public class ImageMagick extends AbstractImage {
     private void imageConvert(MagickImage image, String destfilename,ImageArgConvert imageArgConvert) throws Exception {
         String filename = generalImageExtName(imageArgConvert.getImageSize(), destfilename);
         ImageSize retImageSize = scaleSize(new ImageSize((int) image.getDimension().getWidth(), (int) image.getDimension().getHeight()), imageArgConvert.getImageSize());
+
         // 定义新图的MagickImage对象
         MagickImage newimage = null;
         try {
@@ -102,10 +100,8 @@ public class ImageMagick extends AbstractImage {
             buildWaterMaker(imageArgConvert, newimage);
             newimage = cutImage(imageArgConvert, newimage, retImageSize);
             newimage.setFileName(filename);
-    //      newimage.set
             ImageInfo imageInfo = new ImageInfo();
-    //      imageInfo.set
-    //      imageInfo.setQuality(40);
+            imageInfo.setQuality(imageArgConvert.getQuality());
             newimage.writeImage(imageInfo);
         }finally {
             if(newimage != null){
@@ -130,7 +126,6 @@ public class ImageMagick extends AbstractImage {
             if(!FileUtils.exists(savePath)){
                 throw new FileUploadException();
             }
-
             image = new MagickImage(new ImageInfo(), data);
             convert2RGB(image);
             return new UploadResult().setWidth((int) image.getDimension().getWidth()).setHeight((int) image.getDimension().getHeight());

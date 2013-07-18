@@ -1,7 +1,5 @@
 package com.dooioo.upload.uploads;
 
-import com.dooioo.commons.Dates;
-import com.dooioo.commons.Randoms;
 import com.dooioo.upload.UploadResult;
 import com.dooioo.upload.image.ImageArgConvert;
 import com.dooioo.upload.image.factory.ImageFactory;
@@ -20,22 +18,17 @@ import java.util.List;
  *        To change this template use File | Settings | File Templates.
  */
 public final class ImageUpload{
-//    private static final Logger LOGGER = Logger.getLogger(ImageUpload.class);
-    private static final String DATE_YEAR_STYLE  = "yyyy";
-    private static final String DATE_MONTH_DAY_STYLE  = "MMdd";
-    private static final String FILE_SEPARATOR = "/";
-    private static final String FILE_EXT = ".";
-
     /**
      * 上传原图
      *
      * @throws Exception
      */
     public static UploadResult upload(byte[] data , String origiFileName , ImageArgConvert... imageArgConverts) throws Exception {
-        String path =  Dates.getDateTime(DATE_YEAR_STYLE) + "/" + Dates.getDateTime(DATE_MONTH_DAY_STYLE);
-        String fileName = Randoms.getPrimaryKey() + FILE_EXT + FileUtils.getFileExtName(origiFileName);
-        FileUtils.existsAndCreate(UploadConfig.getInstance().getOriginalDirectory() + FILE_SEPARATOR + path + FILE_SEPARATOR );
-        String targetFileName = path + FILE_SEPARATOR + fileName;
+        String path =  FileUtils.createDatePath();
+        String fileName = FileUtils.genrateFileName() + FileUtils.FILE_EXT + FileUtils.getFileExtName(origiFileName);
+        FileUtils.existsAndCreate(UploadConfig.getInstance().getOriginalDirectory() +FileUtils. FILE_SEPARATOR + path + FileUtils.FILE_SEPARATOR );
+        String targetFileName = path + FileUtils.FILE_SEPARATOR + fileName;
+
         // 同步
         List<ImageArgConvert> syncImageArgConvert = new ArrayList<ImageArgConvert>();
         //异步
@@ -51,7 +44,7 @@ public final class ImageUpload{
         }
 
         //先存储原图
-        UploadResult upload = ImageFactory.newInstance().upload(data, UploadConfig.getInstance().getOriginalDirectory() + FILE_SEPARATOR + targetFileName);
+        UploadResult upload = ImageFactory.newInstance().upload(data, UploadConfig.getInstance().getOriginalDirectory() + FileUtils.FILE_SEPARATOR + targetFileName);
         upload.setOrigiName(origiFileName).setTargetName(targetFileName);
 
         //同步生成

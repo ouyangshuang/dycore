@@ -1,7 +1,5 @@
 package com.dooioo.upload.uploads;
 
-import com.dooioo.commons.Dates;
-import com.dooioo.commons.Randoms;
 import com.dooioo.upload.UploadResult;
 import com.dooioo.upload.exception.UploadException;
 import com.dooioo.upload.utils.FileUtils;
@@ -22,10 +20,6 @@ import java.util.zip.ZipInputStream;
 */
 public class ZipFileUpload {
     private static final Logger LOGGER = Logger.getLogger(DocUpload.class);
-    private static final String DATE_YEAR_STYLE  = "yyyy";
-    private static final String DATE_MONTH_DAY_STYLE  = "MMdd";
-    private static final String FILE_SEPARATOR = "/";
-    private static final String FILE_EXT = ".";
 
     /**
      * 上传ZIP文件 ,并解压
@@ -40,13 +34,15 @@ public class ZipFileUpload {
         }
         try {
             //上传ZIP
-            String  datePath = Dates.getDateTime(DATE_YEAR_STYLE) + "/" + Dates.getDateTime(DATE_MONTH_DAY_STYLE);
-            String targetFilePath = UploadConfig.getInstance().getFlashDirectory() + FILE_SEPARATOR + datePath + FILE_SEPARATOR ;
+            String  datePath = FileUtils.createDatePath();
+            String targetFilePath = UploadConfig.getInstance().getFlashDirectory() + FileUtils.FILE_SEPARATOR + datePath + FileUtils.FILE_SEPARATOR ;
             FileUtils.existsAndCreate(targetFilePath);
-            String  targetPath =   Randoms.getPrimaryKey();
-            String  targetFileName = targetPath + FILE_EXT +  FileUtils.getFileExtName(origiFileName);
+
+            String  targetPath =  FileUtils.genrateFileName();
+            String  targetFileName = targetPath + FileUtils.FILE_EXT +  FileUtils.getFileExtName(origiFileName);
+
             FileUtils.writeByteToFile(data,targetFilePath + targetFileName);
-            UploadResult upload = new UploadResult().setOrigiName(origiFileName).setTargetName(UploadConfig.getInstance().getFlashPath() + datePath + FILE_SEPARATOR + targetFileName);
+            UploadResult upload = new UploadResult().setOrigiName(origiFileName).setTargetName(UploadConfig.getInstance().getFlashPath() + datePath + FileUtils.FILE_SEPARATOR + targetFileName);
 
             if(!isunzip){
                 return upload;
@@ -58,14 +54,13 @@ public class ZipFileUpload {
             ZipInputStream zis=null;
             ZipEntry ze;
             String _path =  UploadConfig.getInstance().getFlashPath() + datePath + targetPath;
-            String newFile = targetFilePath + targetPath +  FILE_SEPARATOR;
+            String newFile = targetFilePath + targetPath +  FileUtils.FILE_SEPARATOR;
 
             try{
                 fs	= new FileInputStream(targetFilePath + targetFileName);
                 zis = new ZipInputStream(new BufferedInputStream(fs));
                 while ((ze = zis.getNextEntry()) != null) {
                     int count;
-//                    byte[] buffer = new byte[2048];
                     if (ze.isDirectory()) {
                         continue;
                     }

@@ -26,15 +26,15 @@ public abstract class AbstractImage {
     /**
      * 文件路径分隔符
      */
-    protected static final String FILE_SEPARATOR = "/";
+    protected static final String FILE_SEPARATOR = FileUtils.FILE_SEPARATOR;
     /**
      * 上传图片根目录
      */
-    private static final String originalDirectory = UploadConfig.getInstance().getOriginalDirectory();
+    protected static final String originalDirectory = UploadConfig.getInstance().getOriginalDirectory();
     /**
      * 压缩后，图片根目录
      */
-    private static final String tragetDirectory = UploadConfig.getInstance().getTargetDirectory();
+    protected static final String tragetDirectory = UploadConfig.getInstance().getTargetDirectory();
 
     /**
      * 生成单张缩略图

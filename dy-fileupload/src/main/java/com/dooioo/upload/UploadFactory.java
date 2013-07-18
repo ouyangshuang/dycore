@@ -22,15 +22,10 @@ import java.util.Set;
  */
 public class UploadFactory {
     private static Set<String> RECORD_TYPE = new HashSet<String>();
-    private static Set<String> ZIP_TYPE = new HashSet<String>();
 
     static {
         //录音文件
         RECORD_TYPE.add("wav");
-
-        //压缩文件
-        ZIP_TYPE.add("zip");
-        ZIP_TYPE.add("rar");
     }
 
     /**
@@ -58,31 +53,50 @@ public class UploadFactory {
     }
 
     /**
-     * 上传文档文件 eg:wav.doc
+     * 上传压缩(ZIP\RAR)文件
      * @param fileItem
      * @param isunzip 如果是zip文件是否需要解压
      * @return
      * @throws UploadException
      */
-    public static UploadResult upload(FileItem fileItem,boolean isunzip) throws UploadException {
-        return upload(fileItem.get(), fileItem.getName(),isunzip);
+    public static UploadResult uploadZip(FileItem fileItem,boolean isunzip) throws UploadException {
+        return uploadZip(fileItem.get(), fileItem.getName(),isunzip);
     }
 
     /**
-     * 上传文档文件 eg:wav.doc
+     * 上传压缩文件
      * @param data
      * @param fileName
      * @param isunzip  如果是zip文件是否需要解压
      * @return
      * @throws UploadException
      */
-    public static UploadResult upload(byte[] data, String fileName, boolean isunzip) throws UploadException {
+    public static UploadResult uploadZip(byte[] data, String fileName, boolean isunzip) throws UploadException {
+        return ZipFileUpload.upload(data, fileName, isunzip);
+    }
+
+
+    /**
+     * 上传文档文件 eg:wav.doc
+     * @param fileItem
+     * @return
+     * @throws UploadException
+     */
+    public static UploadResult upload(FileItem fileItem) throws UploadException {
+        return upload(fileItem.get(), fileItem.getName());
+    }
+
+    /**
+     * 上传文档文件 eg:wav.doc
+     * @param data
+     * @param fileName
+     * @return
+     * @throws UploadException
+     */
+    public static UploadResult upload(byte[] data, String fileName) throws UploadException {
         String extName = FileUtils.getFileExtName(fileName).toLowerCase();
         if (RECORD_TYPE.contains(extName)) {
             return RecordUpload.upload(data, fileName);
-        }
-        if (ZIP_TYPE.contains(extName)) {
-            return ZipFileUpload.upload(data, fileName, isunzip);
         }
         return DocUpload.upload(data, fileName);
     }
