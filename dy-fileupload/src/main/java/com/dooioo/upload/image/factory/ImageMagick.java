@@ -227,7 +227,7 @@ public class ImageMagick extends AbstractImage {
      * @param imageSize
      */
     private static MagickImage cutImage(ImageArgConvert imageArgConvert, MagickImage newimage, ImageSize imageSize) throws MagickException {
-        if (imageArgConvert.getImageSize().getWidth() > 200){
+        if (imageArgConvert.getImageSize().getWidth() <=0 || imageArgConvert.getImageSize().getWidth() > 200){
             return newimage;
         }
         Rectangle rect = new Rectangle(imageSize.getX(), imageSize.getY(), imageArgConvert.getImageSize().getWidth(), imageArgConvert .getImageSize().getHeight());
