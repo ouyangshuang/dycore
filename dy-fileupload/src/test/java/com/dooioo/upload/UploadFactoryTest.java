@@ -31,7 +31,7 @@ public class UploadFactoryTest {
         picdata = FileUtils.readFileToByte("E:/data/dooioo.jpg");
         docdata = FileUtils.readFileToByte("E:/data/QQ空间.apk");
         recorddata =  FileUtils.readFileToByte("E:/data/dooioo.wav");
-        rardata =  FileUtils.readFileToByte("E:/data/TelServer.rar");
+        rardata =  FileUtils.readFileToByte("E:/data/dooioo.zip");
     }
 
     @Test
@@ -55,9 +55,9 @@ public class UploadFactoryTest {
 
     @Test
     public void testRarUpload() throws UploadException {
-        System.out.println("不解压:" + UploadFactory.uploadZip(rardata, "TelServer.rar", false));
+        System.out.println("不解压:" + UploadFactory.uploadZip(rardata, "dooioo.zip", false));
 
-        System.out.println("解压:" + UploadFactory.uploadZip(rardata, "TelServer.rar", true));
+        System.out.println("解压:" + UploadFactory.uploadZip(rardata, "dooioo.zip", true));
     }
 
     @Test

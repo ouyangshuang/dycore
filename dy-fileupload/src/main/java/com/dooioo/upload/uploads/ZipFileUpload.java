@@ -53,7 +53,7 @@ public class ZipFileUpload {
             FileInputStream fs =null;
             ZipInputStream zis=null;
             ZipEntry ze;
-            String _path =  UploadConfig.getInstance().getFlashPath() + datePath  + FileUtils.FILE_SEPARATOR + targetPath;
+            String _path =  UploadConfig.getInstance().getFlashPath() + datePath  + FileUtils.FILE_SEPARATOR + targetPath + FileUtils.FILE_SEPARATOR;
             String newFile = targetFilePath + targetPath +  FileUtils.FILE_SEPARATOR;
 
             try{
