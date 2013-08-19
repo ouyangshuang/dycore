@@ -8,6 +8,7 @@ import com.dooioo.upload.image.Logo;
 import com.dooioo.upload.utils.FileUtils;
 import com.dooioo.upload.utils.UploadConfig;
 import magick.MagickException;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.log4j.Logger;
 
@@ -60,6 +61,8 @@ public abstract class AbstractImage {
      * @param
      */
     public abstract UploadResult upload(byte[] data, String savePath) throws UploadException, MagickException, IOException, FileUploadException;
+
+    public abstract UploadResult write(FileItem fileItem, String savePath) throws MagickException, FileUploadException;
 
     /**
      * 图片等比例缩放

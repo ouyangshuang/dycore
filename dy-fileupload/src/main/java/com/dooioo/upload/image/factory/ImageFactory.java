@@ -8,14 +8,11 @@ package com.dooioo.upload.image.factory;
  *        To change this template use File | Settings | File Templates.
  */
 public class ImageFactory {
-    private static AbstractImage image = null;
+    private static AbstractImage image =  new ImageMagick();
 
     private ImageFactory(){}
 
-    public static synchronized AbstractImage newInstance(){
-        if(image == null){
-            image = new ImageMagick();
-        }
+    public static AbstractImage newInstance(){
         return image;
     }
 }

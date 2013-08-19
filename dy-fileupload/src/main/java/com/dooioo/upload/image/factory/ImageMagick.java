@@ -6,9 +6,11 @@ import com.dooioo.upload.image.ImageSize;
 import com.dooioo.upload.utils.FileUtils;
 import com.dooioo.upload.utils.UploadConfig;
 import magick.*;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,6 +136,33 @@ public class ImageMagick extends AbstractImage {
                 image.destroyImages();
         }
     }
+
+
+    @Override
+    public UploadResult write(FileItem fileItem, String savePath) throws MagickException, FileUploadException {
+        MagickImage image = null;
+        try {
+            // 写原图
+            try {
+//                FileUtils.writeByteToFile(data, savePath);
+                fileItem.write(new File(savePath));
+            }catch (Exception e){
+                LOGGER.info("图片写入失败", e);
+            }
+
+            //处理原图未上传的异常
+            if(!FileUtils.exists(savePath)){
+                throw new FileUploadException();
+            }
+            image = new MagickImage(new ImageInfo(),fileItem.get());
+            convert2RGB(image);
+            return new UploadResult().setWidth((int) image.getDimension().getWidth()).setHeight((int) image.getDimension().getHeight());
+        } finally {
+            if (image != null)
+                image.destroyImages();
+        }
+    }
+
 
     /**
      * jmagick 将所有图片色彩统一为RGB

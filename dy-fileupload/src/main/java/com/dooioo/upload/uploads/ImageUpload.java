@@ -63,8 +63,41 @@ public final class ImageUpload{
      *
      * @throws Exception
      */
-    public static UploadResult upload(FileItem fileItem) throws Exception {
-       return upload(fileItem.get(), fileItem.getName());
+    public static UploadResult upload(FileItem fileItem  , ImageArgConvert... imageArgConverts) throws Exception {
+//       return upload(fileItem.get(), fileItem.getName());
+        String origiFileName = fileItem.getName();
+        String path =  FileUtils.createDatePath();
+        String fileName = FileUtils.genrateFileName() + FileUtils.FILE_EXT + FileUtils.getFileExtName(origiFileName);
+        FileUtils.existsAndCreate(UploadConfig.getInstance().getOriginalDirectory() +FileUtils. FILE_SEPARATOR + path + FileUtils.FILE_SEPARATOR );
+        String targetFileName = path + FileUtils.FILE_SEPARATOR + fileName;
+
+        // 同步
+        List<ImageArgConvert> syncImageArgConvert = new ArrayList<ImageArgConvert>();
+        //异步
+        List<ImageArgConvert> asyncImageArgConvert = new ArrayList<ImageArgConvert>();
+        if(imageArgConverts != null && imageArgConverts.length > 0){
+            for(ImageArgConvert imageArgConvert : imageArgConverts){
+                if(imageArgConvert.isAsync()){
+                    asyncImageArgConvert.add(imageArgConvert);
+                }else{
+                    syncImageArgConvert.add(imageArgConvert);
+                }
+            }
+        }
+
+        //先存储原图
+        UploadResult upload = ImageFactory.newInstance().write(fileItem, UploadConfig.getInstance().getOriginalDirectory() + FileUtils.FILE_SEPARATOR + targetFileName);
+        upload.setOrigiName(origiFileName).setTargetName(targetFileName);
+
+        //同步生成
+        if(syncImageArgConvert.size() > 0){
+            scaleMultiHandle(upload.getTargetName()  ,syncImageArgConvert);
+        }
+        //异步生成
+        if(asyncImageArgConvert.size() > 0){
+            //TODO:
+        }
+        return upload;
     }
 
     /**

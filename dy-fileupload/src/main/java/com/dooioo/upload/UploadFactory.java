@@ -102,6 +102,19 @@ public class UploadFactory {
     }
 
     /**
+     * 上传文档文件 eg:wav.doc
+     * @return
+     * @throws UploadException
+     */
+    public static UploadResult write(FileItem fileItem) throws UploadException {
+        String extName = FileUtils.getFileExtName(fileItem.getName()).toLowerCase();
+        if (RECORD_TYPE.contains(extName)) {
+            return RecordUpload.write(fileItem);
+        }
+        return DocUpload.write(fileItem);
+    }
+
+    /**
      * 异步生成缩略图
      *
      * @param picPath          图片路径
