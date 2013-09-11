@@ -2,7 +2,8 @@ package com.dooioo.upload.uploads;
 
 import com.dooioo.upload.UploadResult;
 import com.dooioo.upload.image.ImageArgConvert;
-import com.dooioo.upload.image.factory.ImageFactory;
+import com.dooioo.upload.image.factory.ImageMagick;
+import com.dooioo.upload.utils.DbUtils;
 import com.dooioo.upload.utils.FileUtils;
 import com.dooioo.upload.utils.UploadConfig;
 import org.apache.commons.fileupload.FileItem;
@@ -44,7 +45,7 @@ public final class ImageUpload{
         }
 
         //先存储原图
-        UploadResult upload = ImageFactory.newInstance().upload(data, UploadConfig.getInstance().getOriginalDirectory() + FileUtils.FILE_SEPARATOR + targetFileName);
+        UploadResult upload = ImageMagick.upload(data, UploadConfig.getInstance().getOriginalDirectory() + FileUtils.FILE_SEPARATOR + targetFileName);
         upload.setOrigiName(origiFileName).setTargetName(targetFileName);
 
         //同步生成
@@ -54,6 +55,7 @@ public final class ImageUpload{
         //异步生成
         if(asyncImageArgConvert.size() > 0){
             //TODO:
+            asyncScaleMultiHandle(upload.getTargetName(),asyncImageArgConvert);
         }
         return upload;
     }
@@ -64,7 +66,6 @@ public final class ImageUpload{
      * @throws Exception
      */
     public static UploadResult upload(FileItem fileItem  , ImageArgConvert... imageArgConverts) throws Exception {
-//       return upload(fileItem.get(), fileItem.getName());
         String origiFileName = fileItem.getName();
         String path =  FileUtils.createDatePath();
         String fileName = FileUtils.genrateFileName() + FileUtils.FILE_EXT + FileUtils.getFileExtName(origiFileName);
@@ -86,7 +87,7 @@ public final class ImageUpload{
         }
 
         //先存储原图
-        UploadResult upload = ImageFactory.newInstance().write(fileItem, UploadConfig.getInstance().getOriginalDirectory() + FileUtils.FILE_SEPARATOR + targetFileName);
+        UploadResult upload = ImageMagick.write(fileItem, UploadConfig.getInstance().getOriginalDirectory() + FileUtils.FILE_SEPARATOR + targetFileName);
         upload.setOrigiName(origiFileName).setTargetName(targetFileName);
 
         //同步生成
@@ -95,7 +96,7 @@ public final class ImageUpload{
         }
         //异步生成
         if(asyncImageArgConvert.size() > 0){
-            //TODO:
+            asyncScaleMultiHandle(upload.getTargetName(),asyncImageArgConvert);
         }
         return upload;
     }
@@ -106,6 +107,15 @@ public final class ImageUpload{
      * @param imageArgConverts
      */
     public static void scaleMultiHandle(String fileName ,List<ImageArgConvert> imageArgConverts) throws Exception {
-        ImageFactory.newInstance().generatesImageHandle(fileName  ,imageArgConverts);
+        ImageMagick.generatesImageHandle(fileName, imageArgConverts);
+    }
+
+    /**
+     * 异步生成多张缩略图                                         `
+     * @param fileName
+     * @param imageArgConverts
+     */
+    public static void asyncScaleMultiHandle(String fileName ,List<ImageArgConvert> imageArgConverts) throws Exception {
+        DbUtils.getInstance().insertTask(fileName,imageArgConverts);
     }
 }

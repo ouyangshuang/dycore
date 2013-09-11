@@ -27,18 +27,18 @@ public class ImageMagick extends AbstractImage {
         System.setProperty("jmagick.systemclassloader", "no");
     }
 
-    public ImageMagick() {
+    private ImageMagick() {
     }
 
-    @Override
-    public void generatesImageHandle(final String fileName,final ImageArgConvert imageArgConvert) throws Exception {
+//    @Override
+    public static void generatesImageHandle(final String fileName,final ImageArgConvert imageArgConvert) throws Exception {
         generatesImageHandle(fileName, new ArrayList<ImageArgConvert>() {{
             add(imageArgConvert);
         }});
     }
 
-    @Override
-    public void generatesImageHandle(String fileName, List<ImageArgConvert> imageArgConverts) throws Exception {
+//    @Override
+    public static void generatesImageHandle(String fileName, List<ImageArgConvert> imageArgConverts) throws Exception {
         if (imageArgConverts == null || imageArgConverts.size() == 0) {
             return;
         }
@@ -68,7 +68,7 @@ public class ImageMagick extends AbstractImage {
      * @param relativepath
      * @throws Exception
      */
-    private void splitHandle(MagickImage image, String relativepath , List<ImageArgConvert> imageArgConverts) throws Exception {
+    private static void splitHandle(MagickImage image, String relativepath , List<ImageArgConvert> imageArgConverts) throws Exception {
         convert2RGB(image);
         //生成文件目录
         String relationPath = relativepath.substring(0, relativepath.lastIndexOf("/"));
@@ -91,10 +91,13 @@ public class ImageMagick extends AbstractImage {
      *
      * @throws Exception
      */
-    private void imageConvert(MagickImage image, String destfilename,ImageArgConvert imageArgConvert) throws Exception {
+    private static void imageConvert(MagickImage image, String destfilename,ImageArgConvert imageArgConvert) throws Exception {
         String filename = generalImageExtName(imageArgConvert.getImageSize(), destfilename);
-        ImageSize retImageSize = scaleSize(new ImageSize((int) image.getDimension().getWidth(), (int) image.getDimension().getHeight()), imageArgConvert.getImageSize());
+        if(new File(filename).exists()){
+            return;
+        }
 
+        ImageSize retImageSize = scaleSize(new ImageSize((int) image.getDimension().getWidth(), (int) image.getDimension().getHeight()), imageArgConvert.getImageSize());
         // 定义新图的MagickImage对象
         MagickImage newimage = null;
         try {
@@ -113,8 +116,8 @@ public class ImageMagick extends AbstractImage {
 
     }
 
-    @Override
-    public UploadResult upload(byte[] data, String savePath) throws MagickException, FileUploadException {
+//    @Override
+    public static UploadResult upload(byte[] data, String savePath) throws MagickException, FileUploadException {
         MagickImage image = null;
         try {
             // 写原图
@@ -138,8 +141,8 @@ public class ImageMagick extends AbstractImage {
     }
 
 
-    @Override
-    public UploadResult write(FileItem fileItem, String savePath) throws MagickException, FileUploadException {
+//    @Override
+    public static UploadResult write(FileItem fileItem, String savePath) throws MagickException, FileUploadException {
         MagickImage image = null;
         try {
             // 写原图
@@ -189,7 +192,7 @@ public class ImageMagick extends AbstractImage {
      * @param newimage
      * @throws MagickException
      */
-    private void buildWaterMaker(ImageArgConvert imageArgConvert, MagickImage newimage) throws MagickException {
+    private static void buildWaterMaker(ImageArgConvert imageArgConvert, MagickImage newimage) throws MagickException {
         if (!hasWaterMaker(imageArgConvert)) {
             return;
         }

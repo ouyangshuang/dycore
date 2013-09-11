@@ -40,7 +40,7 @@ public class RecordUpload {
     /**
      * 上传文件
      */
-    public static UploadResult write(FileItem fileItem) throws UploadException {
+    public static UploadResult upload(FileItem fileItem) throws UploadException {
         try {
             String origiFileName = fileItem.getName();
             String datePath =  FileUtils.createDatePath();
@@ -55,10 +55,10 @@ public class RecordUpload {
         }
     }
 
-    /**
-     * 上传文件
-     */
-    public static UploadResult upload(FileItem fileItem) throws UploadException {
-        return upload(fileItem.get(), fileItem.getName());
-    }
+//    /**
+//     * 上传文件
+//     */
+//    public static UploadResult upload(FileItem fileItem) throws UploadException {
+//        return upload(fileItem.get(), fileItem.getName());
+//    }
 }

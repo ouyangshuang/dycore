@@ -1,11 +1,16 @@
 package com.dooioo.upload.utils;
 
+import com.dooioo.upload.image.ImageArgConvert;
+import net.sf.json.JSONObject;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA at 13-9-9 下午5:35.
@@ -15,11 +20,32 @@ import java.sql.Statement;
  *        To change this template use File | Settings | File Templates.
  */
 public class DbUtils {
-
     private static DataSource dataSource;
     private static DbUtils dbUtils;
 
+    private String url;
+    private String driver;
+    private String user;
+    private String password;
+
     private DbUtils() {
+        Properties properties = new Properties();
+        try {
+            properties.load(getClass().getClassLoader().getResourceAsStream("global.properties"));
+            properties.load(getClass().getClassLoader().getResourceAsStream("jdbc.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        String env = properties.getProperty("env","test");
+        if("production".equals(env)){    //默认都是test
+            env = "test";
+        }
+        url = properties.getProperty(env + ".fileupload.jdbc.url","jdbc:sqlserver://10.8.1.142:1433;DatabaseName=activeMQ");
+        driver = properties.getProperty(env + ".fileupload.jdbc.driver","com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        user = properties.getProperty(env + ".fileupload.jdbc.user","dooiooadmin");
+        password = properties.getProperty(env + ".fileupload.jdbc.password","5a2eff87efec511e");
+
         dataSource = initDataSource();
     }
 
@@ -30,13 +56,12 @@ public class DbUtils {
         return dbUtils;
     }
 
-    public boolean insertTask() {
-        String sql = "";
+    public boolean insertTask(String path,List<ImageArgConvert> imageArgConverts) {
+        String sql = String.format("insert into asyncImageTask(path,imageArgConvertJson) values ('%s','%s')",path, JSONObject.fromObject(imageArgConverts).toString());
         Connection connection= null;
         Statement s = null;
         try {
             connection = dataSource.getConnection();
-
             s = connection.createStatement();
             return s.executeUpdate(sql) > 0;
         } catch (SQLException e) {
@@ -61,10 +86,10 @@ public class DbUtils {
 
     private BasicDataSource initDataSource() {
         BasicDataSource p = new BasicDataSource();
-        p.setUrl("jdbc:sqlserver://10.8.1.142:1433;DatabaseName=activeMQ");
-        p.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        p.setUsername("dooiooadmin");
-        p.setPassword("5a2eff87efec511e");
+        p.setUrl(url);
+        p.setDriverClassName(driver);
+        p.setUsername(user);
+        p.setPassword(password);
         p.setTestWhileIdle(false);
         p.setValidationQuery("SELECT 1");
         p.setTestOnReturn(false);

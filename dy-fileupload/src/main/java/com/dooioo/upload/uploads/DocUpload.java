@@ -40,7 +40,7 @@ public final class DocUpload{
     /**
      * 上传文件
      */
-    public static UploadResult write(FileItem fileItem) throws UploadException {
+    public static UploadResult upload(FileItem fileItem) throws UploadException {
         try {
             String origiFileName = fileItem.getName();
             String path = FileUtils.createDatePath();
@@ -53,12 +53,5 @@ public final class DocUpload{
             LOGGER.error(e);
             throw new UploadException(e);
         }
-    }
-
-    /**
-     * 上传文件
-     */
-    public static UploadResult upload(FileItem fileItem) throws UploadException {
-        return upload(fileItem.get(), fileItem.getName());
     }
 }

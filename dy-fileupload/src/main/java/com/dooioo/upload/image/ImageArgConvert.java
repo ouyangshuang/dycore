@@ -102,47 +102,53 @@ public class ImageArgConvert {
         return imageSize;
     }
 
-    public void setImageSize(ImageSize imageSize) {
+    public ImageArgConvert setImageSize(ImageSize imageSize) {
         this.imageSize = imageSize;
+        return this;
     }
 
     public Logo getLogo() {
         return logo;
     }
 
-    public void setLogo(Logo logo) {
+    public ImageArgConvert setLogo(Logo logo) {
         this.logo = logo;
+        return this;
     }
 
     public LogoPosition getLogoPosition() {
         return logoPosition;
     }
 
-    public void setLogoPosition(LogoPosition logoPosition) {
+    public ImageArgConvert setLogoPosition(LogoPosition logoPosition) {
         this.logoPosition = logoPosition;
+        return this;
     }
 
     public boolean isAsync() {
         return async;
     }
 
-    public void setAsync(boolean async) {
+    public ImageArgConvert setAsync(boolean async) {
         this.async = async;
+        return this;
     }
 
     public boolean isMirror() {
         return mirror;
     }
 
-    public void setMirror(boolean mirror) {
+    public ImageArgConvert setMirror(boolean mirror) {
         this.mirror = mirror;
+        return this;
     }
 
     public int getQuality() {
         return quality;
     }
 
-    public void setQuality(int quality) {
+    public ImageArgConvert setQuality(int quality) {
         this.quality = quality;
+        return this;
     }
 }

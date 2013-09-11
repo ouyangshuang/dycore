@@ -2,18 +2,11 @@ package com.dooioo.upload.image.factory;
 
 import com.dooioo.upload.exception.UploadException;
 import com.dooioo.upload.image.ImageArgConvert;
-import com.dooioo.upload.UploadResult;
 import com.dooioo.upload.image.ImageSize;
 import com.dooioo.upload.image.Logo;
 import com.dooioo.upload.utils.FileUtils;
 import com.dooioo.upload.utils.UploadConfig;
-import magick.MagickException;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.log4j.Logger;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA at 13-6-24 下午1:45.
@@ -37,32 +30,32 @@ public abstract class AbstractImage {
      */
     protected static final String tragetDirectory = UploadConfig.getInstance().getTargetDirectory();
 
-    /**
-     * 生成单张缩略图
-     *
-     * @param fileName        图片路径
-     * @param imageArgConvert 生成规格
-     */
-    public abstract void generatesImageHandle(String fileName, ImageArgConvert imageArgConvert) throws Exception;
-
-    /**
-     * 生成多张缩略图
-     *
-     * @param fileName         图片路径
-     * @param imageArgConverts 生成规格
-     */
-    public abstract void generatesImageHandle(String fileName, List<ImageArgConvert> imageArgConverts) throws Exception;
-
-    /**
-     * 生成原图
-     *
-     * @param data     图片字节流
-     * @param savePath 保存路径
-     * @param
-     */
-    public abstract UploadResult upload(byte[] data, String savePath) throws UploadException, MagickException, IOException, FileUploadException;
-
-    public abstract UploadResult write(FileItem fileItem, String savePath) throws MagickException, FileUploadException;
+//    /**
+//     * 生成单张缩略图
+//     *
+//     * @param fileName        图片路径
+//     * @param imageArgConvert 生成规格
+//     */
+//    public abstract void generatesImageHandle(String fileName, ImageArgConvert imageArgConvert) throws Exception;
+//
+//    /**
+//     * 生成多张缩略图
+//     *
+//     * @param fileName         图片路径
+//     * @param imageArgConverts 生成规格
+//     */
+//    public abstract void generatesImageHandle(String fileName, List<ImageArgConvert> imageArgConverts) throws Exception;
+//
+//    /**
+//     * 生成原图
+//     *
+//     * @param data     图片字节流
+//     * @param savePath 保存路径
+//     * @param
+//     */
+//    public abstract UploadResult upload(byte[] data, String savePath) throws UploadException, MagickException, IOException, FileUploadException;
+//
+//    public abstract UploadResult write(FileItem fileItem, String savePath) throws MagickException, FileUploadException;
 
     /**
      * 图片等比例缩放
@@ -71,7 +64,7 @@ public abstract class AbstractImage {
      * @param targetImageSize
      * @return
      */
-    protected ImageSize scaleSize(ImageSize sourceImageSize, ImageSize targetImageSize) {
+    protected static ImageSize scaleSize(ImageSize sourceImageSize, ImageSize targetImageSize) {
         ImageSize scaleImageSize = new ImageSize();
 
         if (isUseOriginal(sourceImageSize, targetImageSize)) {
@@ -110,7 +103,7 @@ public abstract class AbstractImage {
      *
      * @return
      */
-    private boolean isUseOriginal(ImageSize sourceImageSize, ImageSize targetImageSize) {
+    private static boolean isUseOriginal(ImageSize sourceImageSize, ImageSize targetImageSize) {
         return targetImageSize.getHeight() == -1 || targetImageSize.getWidth() == -1
                 || targetImageSize.getHeight() == 0 || targetImageSize.getWidth() == 0
                 || (targetImageSize.getHeight() >= sourceImageSize.getHeight()
@@ -137,7 +130,7 @@ public abstract class AbstractImage {
      *
      * @return 判断是否是宽比例缩放
      */
-    private boolean compareScaleSize(ImageSize sourceSize, ImageSize targetSize) {
+    private static boolean compareScaleSize(ImageSize sourceSize, ImageSize targetSize) {
         return sourceSize.getWidth() / targetSize.getWidth() >= sourceSize.getHeight() / targetSize.getHeight();
     }
 
@@ -147,7 +140,7 @@ public abstract class AbstractImage {
      * @param imageArgConvert
      * @return
      */
-    protected boolean hasWaterMaker(ImageArgConvert imageArgConvert) {
+    protected static boolean hasWaterMaker(ImageArgConvert imageArgConvert) {
         return imageArgConvert.getLogo() != Logo.None;
     }
 }

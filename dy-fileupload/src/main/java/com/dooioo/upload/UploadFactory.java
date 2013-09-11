@@ -30,7 +30,6 @@ public class UploadFactory {
 
     /**
      * 上传图片
-     * //TODO:目前只支持同步压缩 异步调用
      * @param fileItem
      * @param imageArgConverts
      * @return
@@ -42,7 +41,6 @@ public class UploadFactory {
 
     /**
      * 上传图片
-     * //TODO:目前只支持同步压缩 异步调用未实现
      * @param data
      * @param imageArgConverts
      * @return
@@ -109,9 +107,9 @@ public class UploadFactory {
     public static UploadResult write(FileItem fileItem) throws UploadException {
         String extName = FileUtils.getFileExtName(fileItem.getName()).toLowerCase();
         if (RECORD_TYPE.contains(extName)) {
-            return RecordUpload.write(fileItem);
+            return RecordUpload.upload(fileItem);
         }
-        return DocUpload.write(fileItem);
+        return DocUpload.upload(fileItem);
     }
 
     /**
@@ -124,6 +122,7 @@ public class UploadFactory {
     public static void asyncGeneratePics(String picPath, List<ImageArgConvert> imageArgConverts) throws Exception {
         if (imageArgConverts == null || imageArgConverts.size() == 0)
             return;
-        ImageUpload.scaleMultiHandle(picPath, imageArgConverts);
+        ImageUpload.asyncScaleMultiHandle(picPath, imageArgConverts);
+
     }
 }

@@ -37,14 +37,14 @@ public class UploadConfig {
         try {
             properties.load(this.getClass().getClassLoader().getResourceAsStream("upload.properties"));
             originalDirectory = properties.getProperty("originalDirectory","/origimagesdisk/");
-            targetDirectory = properties.getProperty("targetDirectory","/imagesdisk/");
-            docDirectory = properties.getProperty("docDirectory","/docsdisk/");
+            targetDirectory = properties.getProperty("targetDirectory","/imagesdisk/images/");
+            docDirectory = properties.getProperty("docDirectory","/flashdisk/");
             recordDirectory = properties.getProperty("recordDirectory","/recorddisk/");
             flashDirectory = properties.getProperty("flashDirectory","/flashdisk/");
 
-            docPath =  properties.getProperty("docPath","/docs/");
-            flashPath =  properties.getProperty("flashPath","/flashs/");
-            recordPath = properties.getProperty("recordPath","/records/");
+            docPath =  properties.getProperty("docPath","/flashdisk/");
+            flashPath =  properties.getProperty("flashPath","/flashdisk/");
+            recordPath = properties.getProperty("recordPath","/recorddisk/");
 
             logoHuge =  properties.getProperty("logoHuge","/files131/images/logo_huge.png");
             tileLogoPath =  properties.getProperty("logoHuge","/files131/images/logo_tile.png");
@@ -52,13 +52,14 @@ public class UploadConfig {
         } catch (IOException e) {
             LOGGER.error("UploadConfig -> init",e);
             originalDirectory = "/origimagesdisk/";
-            targetDirectory = "/imagesdisk/";
-            docDirectory = "/docsdisk/";
+            targetDirectory = "/imagesdisk/images/";
+            docDirectory = "/flashdisk/";
             recordDirectory = "/recorddisk/";
             flashDirectory = "/flashdisk/";
-            docPath =  "/docs/";
-            flashPath =  "/flashs/";
-            recordPath = "/records/";
+
+            docPath =  "/flashdisk/";
+            flashPath =  "/flashdisk/";
+            recordPath = "/recorddisk/";
             logoHuge =  "/files131/images/logo_huge.png";
             tileLogoPath =  "/files131/images/logo_tile.png";
             superLogoPath =  "/files131/images/logo_super.png";
