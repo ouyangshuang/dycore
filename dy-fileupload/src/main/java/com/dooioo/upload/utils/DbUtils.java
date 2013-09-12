@@ -1,7 +1,7 @@
 package com.dooioo.upload.utils;
 
+import com.dooioo.commons.json.JsonUtils;
 import com.dooioo.upload.image.ImageArgConvert;
-import net.sf.json.JSONObject;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import javax.sql.DataSource;
@@ -56,8 +56,8 @@ public class DbUtils {
         return dbUtils;
     }
 
-    public boolean insertTask(String path,List<ImageArgConvert> imageArgConverts) {
-        String sql = String.format("insert into asyncImageTask(path,imageArgConvertJson) values ('%s','%s')",path, JSONObject.fromObject(imageArgConverts).toString());
+    public boolean insertTask(String path,List<ImageArgConvert> imageArgConverts) throws IOException {
+        String sql = String.format("insert into asyncImageTask(path,imageArgConvertJson) values ('%s','%s')", path, JsonUtils.objectToJson(imageArgConverts).replaceAll("'", "''"));
         Connection connection= null;
         Statement s = null;
         try {

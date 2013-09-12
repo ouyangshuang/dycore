@@ -96,7 +96,7 @@
         <!-- 设定资源文件的存放地址，根据不同的环境设置不同的目录 -->
         <resources>
             <resource>
-                <directory>src/main/resource</directory>
+                <directory>src/main/resources/</directory>
             </resource>
         </resources>
 
