@@ -54,11 +54,4 @@ public class RecordUpload {
             throw  new UploadException(e);
         }
     }
-
-//    /**
-//     * 上传文件
-//     */
-//    public static UploadResult upload(FileItem fileItem) throws UploadException {
-//        return upload(fileItem.get(), fileItem.getName());
-//    }
 }
