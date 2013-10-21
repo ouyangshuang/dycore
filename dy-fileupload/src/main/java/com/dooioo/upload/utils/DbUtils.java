@@ -1,6 +1,7 @@
 package com.dooioo.upload.utils;
 
 import com.dooioo.commons.json.JsonUtils;
+import com.dooioo.plus.DyPlusConfig;
 import com.dooioo.upload.image.ImageArgConvert;
 import org.apache.commons.dbcp.BasicDataSource;
 
@@ -31,14 +32,15 @@ public class DbUtils {
     private DbUtils() {
         Properties properties = new Properties();
         try {
-            properties.load(getClass().getClassLoader().getResourceAsStream("global.properties"));
+//            properties.load(getClass().getClassLoader().getResourceAsStream("global.properties"));
             properties.load(getClass().getClassLoader().getResourceAsStream("jdbc.properties"));
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
-        String env = properties.getProperty("env","test");
-        if("production".equals(env)){    //默认都是test
+        String env = DyPlusConfig.getInstance().getEnv();
+//        String env = properties.getProperty("env","test");
+        if(!"production".equals(env)){    //默认都是test
             env = "test";
         }
         url = properties.getProperty(env + ".fileupload.jdbc.url","jdbc:sqlserver://10.8.1.142:1433;DatabaseName=activeMQ");

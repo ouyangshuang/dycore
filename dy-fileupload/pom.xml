@@ -88,6 +88,12 @@
             <version>1.4.d2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>dycore</groupId>
+            <artifactId>dy-oms</artifactId>
+            <version>3.1.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <!-- 插件配置 -->
