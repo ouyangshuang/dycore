@@ -3,7 +3,7 @@ package com.dooioo.web.common;
 /**
  * Created by IntelliJ IDEA.
  * User: kuang
- * Date: 12-4-25
+ * Date: 12-4-25 ff
  * Time: 下午12:03
  */
 public class Constants {
